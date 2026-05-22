@@ -44,16 +44,59 @@ export function HomePage() {
 
   return (
     <div className="fade-in">
-      <div className="hero" style={{ marginBottom: 20 }}>
-        <div className="hero-text">
+      {/* Container do Hero ajustado para comportamento de background absoluto */}
+      <div className="hero" style={{ 
+        marginBottom: 20, 
+        position: 'relative', 
+        overflow: 'hidden',
+        minHeight: '260px', 
+        borderRadius: 'var(--radius)',
+        background: '#111'
+      }}>
+        
+        {/* Imagem do Mustang esticada por todo o fundo */}
+        <img 
+          src={mustangBanner} 
+          alt="Mustang Background" 
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            zIndex: 1,
+            pointerEvents: 'none'
+          }}
+        />
+
+        {/* Overlay escura para dar contraste e legibilidade ao texto da esquerda */}
+        <div style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(90deg, rgba(15,15,15,0.9) 35%, rgba(15,15,15,0.2) 100%)',
+          zIndex: 2,
+          pointerEvents: 'none'
+        }} />
+
+        {/* Bloco de textos com zIndex superior para flutuar sobre o background */}
+        <div className="hero-text" style={{ 
+          position: 'relative', 
+          zIndex: 3, 
+          padding: '30px 40px',
+          maxWidth: '480px' 
+        }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--orange)', letterSpacing: '2.5px', textTransform: 'uppercase', marginBottom: 10 }}>
             AutoSpec Intelligence Platform
           </div>
-          <div className="hero-title">
-            WELCOME,<br />
+          <div className="hero-title" style={{ fontSize: '32px', fontWeight: '800', lineHeight: '1.2' }}>
+            WELCOME TO AUTOSPEC,<br />
             <span style={{ color: 'var(--orange)' }}>{(user?.name || 'USUÁRIO').toUpperCase()}</span>
           </div>
-          <div className="hero-sub" style={{ maxWidth: 380 }}>
+          <div className="hero-sub" style={{ maxWidth: 380, marginTop: 10, marginBottom: 20, fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
             Sua plataforma de inteligência automotiva. Analise, compare e gerencie veículos com IA.
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -62,22 +105,6 @@ export function HomePage() {
             <button className="btn btn-ghost" onClick={() => navigate('/vehicles')}>Explorar Specs</button>
           </div>
         </div>
-        <img 
-          src={mustangBanner} 
-          alt="Mustang Background" 
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: 0,
-            width: '60%',
-            height: '100%',
-            objectFit: 'cover',
-            maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
-            zIndex: 1,
-            pointerEvents: 'none'
-          }}
-        />
       </div>
 
       <div className="grid-4" style={{ marginBottom: 20 }}>
@@ -165,7 +192,7 @@ export function HomePage() {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img 
                 src={iconeCarro} 
-                alt="Comparativo Ford" // Atualizado aqui
+                alt="Comparativo Ford"
                 style={{ 
                   width: '40px',          
                   height: '40px',         
