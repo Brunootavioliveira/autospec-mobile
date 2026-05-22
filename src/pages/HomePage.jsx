@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { garageService, historyService } from '../services';
 import { Sk } from '../components/ui/Skeleton';
-import iconeCarro from '../assets/vs.png';
+import iconeCarro from '../components/assets/vs.png';
 
 import {
   Zap,
