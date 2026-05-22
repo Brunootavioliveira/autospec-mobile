@@ -14,7 +14,6 @@ export const vehicleService = {
   getById:       (id)   => api.get(`/vehicles/spec/${id}`),
   generate:      (form) => {
     const headers = buildHmacHeaders(form);
-    console.log('Headers HMAC:', headers);
     return http.post('/vehicles/spec', form, { headers }).then(r => r.data);
   },
   compare:       (idA, idB) => api.get('/vehicles/spec/compare', { idA, idB }),

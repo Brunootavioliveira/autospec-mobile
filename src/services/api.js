@@ -9,6 +9,9 @@ export const storage = {
   del: (k) => localStorage.removeItem(k),
 };
 
+const AUTH_ROUTES = ['/auth/login', '/auth/register', '/auth/refresh'];
+const isAuthRoute = (url = '') => AUTH_ROUTES.some((r) => url.includes(r));
+
 const http = axios.create({ baseURL: API_BASE });
 
 http.interceptors.request.use((config) => {
@@ -21,18 +24,35 @@ let isRefreshing = false;
 let failedQueue = [];
 
 const processQueue = (error, token = null) => {
-  failedQueue.forEach((prom) => {
-    if (error) prom.reject(error);
-    else prom.resolve(token);
-  });
+  failedQueue.forEach((p) => (error ? p.reject(error) : p.resolve(token)));
   failedQueue = [];
+};
+
+const clearSession = () => {
+  storage.del('accessToken');
+  storage.del('refreshToken');
+  storage.del('user');
+  window.location.href = '/login';
 };
 
 http.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    const status = error.response?.status;
+
+    if (isAuthRoute(originalRequest.url)) {
+      const msg =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        (status === 401 ? 'Email ou senha incorretos.' : null) ||
+        (status === 404 ? 'Usuário não encontrado.' : null) ||
+        error.message ||
+        `Erro ${status}`;
+      return Promise.reject(new Error(msg));
+    }
+
+    if (status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -41,18 +61,20 @@ http.interceptors.response.use(
           return http(originalRequest);
         });
       }
+
       originalRequest._retry = true;
       isRefreshing = true;
+
       const refreshToken = storage.get('refreshToken');
       if (!refreshToken) {
-        storage.del('accessToken'); storage.del('refreshToken'); storage.del('user');
-        window.location.href = '/login';
+        clearSession();
         return Promise.reject(error);
       }
+
       try {
         const refreshBody = { refreshToken };
         const { data } = await axios.post(`${API_BASE}/auth/refresh`, refreshBody, {
-          headers: buildHmacHeaders(refreshBody),  // ← HMAC adicionado
+          headers: buildHmacHeaders(refreshBody),
         });
         storage.set('accessToken', data.accessToken);
         if (data.refreshToken) storage.set('refreshToken', data.refreshToken);
@@ -61,24 +83,28 @@ http.interceptors.response.use(
         return http(originalRequest);
       } catch (err) {
         processQueue(err, null);
-        storage.del('accessToken'); storage.del('refreshToken'); storage.del('user');
-        window.location.href = '/login';
+        clearSession();
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
       }
     }
-    const msg = error.response?.data?.message || error.response?.data?.error || error.message || `Erro ${error.response?.status}`;
+
+    const msg =
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      error.message ||
+      `Erro ${status}`;
     return Promise.reject(new Error(msg));
   }
 );
 
 const api = {
-  get:     (path, params) => http.get(path, { params }).then(r => r.data),
-  post:    (path, body)   => http.post(path, body).then(r => r.data),
-  patch:   (path, body)   => http.patch(path, body).then(r => r.data),
-  del:     (path)         => http.delete(path).then(r => r.data),
-  getRaw:  (path)         => http.get(path, { responseType: 'blob' }),  // ← novo, para download
+  get:    (path, params) => http.get(path, { params }).then((r) => r.data),
+  post:   (path, body)   => http.post(path, body).then((r) => r.data),
+  patch:  (path, body)   => http.patch(path, body).then((r) => r.data),
+  del:    (path)         => http.delete(path).then((r) => r.data),
+  getRaw: (path)         => http.get(path, { responseType: 'blob' }),
 };
 
 export default api;

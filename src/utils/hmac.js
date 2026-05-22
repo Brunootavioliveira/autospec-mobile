@@ -1,7 +1,6 @@
 import CryptoJS from 'crypto-js';
 
 const HMAC_SECRET = import.meta.env.VITE_HMAC_SECRET;
-console.log('HMAC_SECRET:', HMAC_SECRET); 
 export function buildHmacHeaders(body) {
   const timestamp = Date.now().toString();
   const normalized = JSON.stringify(body);

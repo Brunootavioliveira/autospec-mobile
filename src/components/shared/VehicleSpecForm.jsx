@@ -31,7 +31,7 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
       const data = await vehicleService.generate(form);
       onSelect(data);
       toast('Spec gerada com IA! ✓', 'success');
-    } catch (e) { console.error('ERRO COMPLETO:', e); toast(e.message, 'error'); }
+    } catch (e) { toast(e.message, 'error'); }
     finally { setGenerating(false); }
   };
 

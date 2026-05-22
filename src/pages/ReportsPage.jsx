@@ -84,7 +84,6 @@ export function ReportsPage() {
       pathname = new URL(pathname).pathname;
     }
     const path = pathname.replace('/api/v1', '');
-    console.log('path final:', path);
     const response = await reportService.download(path);
     const blob = new Blob([response.data], { type: 'application/pdf' });
     const link = document.createElement('a');
@@ -94,7 +93,6 @@ export function ReportsPage() {
     link.click();
     link.remove();
   } catch (e) {
-    console.error('ERRO DOWNLOAD:', e);
     toast('Erro ao baixar PDF', 'error');
   }
 };
