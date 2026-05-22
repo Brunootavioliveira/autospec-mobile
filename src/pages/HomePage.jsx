@@ -51,58 +51,58 @@ export function HomePage() {
         overflow: 'hidden',
         minHeight: '260px', 
         borderRadius: 'var(--radius)',
-        background: '#111'
+        background: '#f4f4f5' // 👈 Fundo claro para o card não ficar escuro
       }}>
         
-        {/* Imagem do Mustang esticada por todo o fundo */}
+        {/* Imagem do Mustang ocupando todo o fundo */}
         <img 
           src={mustangBanner} 
           alt="Mustang Background" 
           style={{
             position: 'absolute',
-            left: 0,
+            right: 0,
             top: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: 'cover', // Garante que preencha de ponta a ponta
             zIndex: 1,
             pointerEvents: 'none'
           }}
         />
 
-        {/* Overlay escura para dar contraste e legibilidade ao texto da esquerda */}
+        {/* Gradiente suave: começa cinza na esquerda (para dar leitura ao texto) e fica 100% TRANSPARENTE na direita para o carro brilhar limpo */}
         <div style={{
           position: 'absolute',
           left: 0,
           top: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(90deg, rgba(15,15,15,0.9) 35%, rgba(15,15,15,0.2) 100%)',
+          background: 'linear-gradient(90deg, rgba(244,244,245,0.95) 30%, rgba(244,244,245,0.7) 50%, rgba(244,244,245,0) 100%)',
           zIndex: 2,
           pointerEvents: 'none'
         }} />
 
-        {/* Bloco de textos com zIndex superior para flutuar sobre o background */}
+        {/* Bloco de textos com cores escuras para contraste perfeito com o fundo claro */}
         <div className="hero-text" style={{ 
           position: 'relative', 
           zIndex: 3, 
-          padding: '30px 40px',
+          padding: '35px 40px',
           maxWidth: '480px' 
         }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--orange)', letterSpacing: '2.5px', textTransform: 'uppercase', marginBottom: 10 }}>
             AutoSpec Intelligence Platform
           </div>
-          <div className="hero-title" style={{ fontSize: '32px', fontWeight: '800', lineHeight: '1.2' }}>
+          <div className="hero-title" style={{ color: '#18181b', fontSize: '32px', fontWeight: '800', lineHeight: '1.2' }}>
             WELCOME TO AUTOSPEC,<br />
             <span style={{ color: 'var(--orange)' }}>{(user?.name || 'USUÁRIO').toUpperCase()}</span>
           </div>
-          <div className="hero-sub" style={{ maxWidth: 380, marginTop: 10, marginBottom: 20, fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>
+          <div className="hero-sub" style={{ maxWidth: 380, marginTop: 10, marginBottom: 25, fontSize: '14px', color: '#52525b', fontWeight: '500' }}>
             Sua plataforma de inteligência automotiva. Analise, compare e gerencie veículos com IA.
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <button className="btn btn-primary" onClick={() => navigate('/analyze')}>Nova Análise</button>
-            <button className="btn btn-outline" onClick={() => navigate('/compare')}>Comparar</button>
-            <button className="btn btn-ghost" onClick={() => navigate('/vehicles')}>Explorar Specs</button>
+            <button className="btn btn-outline" style={{ borderColor: '#d4d4d8', color: '#18181b' }} onClick={() => navigate('/compare')}>Comparar</button>
+            <button className="btn btn-ghost" style={{ color: '#52525b' }} onClick={() => navigate('/vehicles')}>Explorar Specs</button>
           </div>
         </div>
       </div>
