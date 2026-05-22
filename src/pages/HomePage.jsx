@@ -4,6 +4,19 @@ import { useAuth } from '../context/AuthContext';
 import { garageService, historyService } from '../services';
 import { Sk } from '../components/ui/Skeleton';
 
+import {
+  Zap,
+  CarFront,
+  ClipboardList,
+  Shield,
+  Activity,
+  Clock3,
+  Plus,
+  Sparkles,
+  Search,
+  ArrowRight
+} from 'lucide-react';
+
 export function HomePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -68,9 +81,9 @@ export function HomePage() {
 
       <div className="grid-4" style={{ marginBottom: 20 }}>
         {[
-          { label: '🚗 Garage', value: garage.length, sub: 'Veículos cadastrados', color: 'var(--text)', path: '/garage' },
-          { label: '✅ Frota ativa', value: activeVehicles.length, sub: insights?.mostPowerful ? `+ Potente: ${insights.mostPowerful}` : 'Veículos ativos', color: 'var(--green)', path: '/garage' },
-          { label: '📋 Histórico', value: history?.totalElements || 0, sub: 'Ações registradas', color: 'var(--text)', path: '/history' },
+          { label: <><CarFront size={14} />Garage</>, value: garage.length, sub: 'Veículos cadastrados', color: 'var(--text)', path: '/garage' },
+          { label: <><Shield size={14} />Frota Ativa</>, value: activeVehicles.length, sub: insights?.mostPowerful ? `+ Potente: ${insights.mostPowerful}` : 'Veículos ativos', color: 'var(--green)', path: '/garage' },
+          { label: <><ClipboardList size={14} />Histórico</>, value: history?.totalElements || 0, sub: 'Ações registradas', color: 'var(--text)', path: '/history' },
         ].map((s) => (
           <div key={s.label} className="stat-card" style={{ cursor: 'pointer', transition: 'border-color .15s' }}
             onClick={() => navigate(s.path)}
