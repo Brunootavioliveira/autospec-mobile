@@ -1,0 +1,237 @@
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '../context/ToastContext';
+import { vehicleService } from '../services';
+import { Modal } from '../components/ui/Modal';
+import { Sk, Spinner } from '../components/ui/Skeleton';
+
+const PAGE_SIZE = 12;
+
+function fuelIcon(f = '') {
+  const fu = (f || '').toUpperCase();
+  if (fu.includes('ELECTR') || fu.includes('ELETRIC')) return '⚡';
+  if (fu.includes('HYBRID') || fu.includes('HIBRIDO')) return '🔋';
+  if (fu.includes('DIESEL')) return '⛽';
+  return '🛢';
+}
+
+function Pagination({ page, totalPages, onNavigate }) {
+  if (totalPages <= 1) return null;
+  const pages = [];
+  let start = Math.max(0, page - 2);
+  let end = Math.min(totalPages - 1, start + 4);
+  if (end - start < 4) start = Math.max(0, end - 4);
+  for (let i = start; i <= end; i++) pages.push(i);
+
+  return (
+    <div className="pagination">
+      <button className="page-btn" onClick={() => onNavigate(0)} disabled={page === 0}>«</button>
+      <button className="page-btn" onClick={() => onNavigate(page - 1)} disabled={page === 0}>‹</button>
+      {pages.map((p) => (
+        <button key={p} className={`page-btn ${p === page ? 'active' : ''}`} onClick={() => onNavigate(p)}>{p + 1}</button>
+      ))}
+      <button className="page-btn" onClick={() => onNavigate(page + 1)} disabled={page >= totalPages - 1}>›</button>
+      <button className="page-btn" onClick={() => onNavigate(totalPages - 1)} disabled={page >= totalPages - 1}>»</button>
+    </div>
+  );
+}
+
+export function VehiclesPage() {
+  const toast = useToast();
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [sort, setSort] = useState('brand');
+  const [detail, setDetail] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+
+  const search = useCallback(async (q = query, p = 0, s = sort) => {
+    setLoading(true);
+    try {
+      const data = await vehicleService.search(q.trim() || undefined, p, PAGE_SIZE, s);
+      setResults(data.content || []);
+      setTotalPages(data.totalPages || 0);
+      setTotalElements(data.totalElements || 0);
+      setPage(p);
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setLoading(false); }
+  }, [query, sort]);
+
+  useEffect(() => { search('', 0, sort); }, []);
+
+  const openDetail = async (id) => {
+    setDetailLoading(true);
+    try {
+      const data = await vehicleService.getById(id);
+      setDetail(data);
+    } catch (e) { toast(e.message, 'error'); }
+    finally { setDetailLoading(false); }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    search(query, 0, sort);
+  };
+
+  return (
+    <div className="fade-in">
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
+        <div>
+          <div className="page-title">🔍 Catálogo de Veículos</div>
+          <div className="page-sub">Explore e busque specs de veículos geradas por IA · {totalElements} registros</div>
+        </div>
+      </div>
+
+      <form onSubmit={handleSearch}>
+        <div className="filter-bar">
+          <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
+            <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', color: 'var(--text3)', fontSize: 15, pointerEvents: 'none' }}>🔍</span>
+            <input ref={inputRef} className="form-input" style={{ paddingLeft: 34 }}
+              placeholder="Buscar por marca, modelo, versão..."
+              value={query} onChange={(e) => setQuery(e.target.value)} />
+          </div>
+          <select
+            style={{ background: 'var(--bg3)', border: '1px solid var(--border2)', borderRadius: 'var(--radius)', padding: '9px 12px', color: 'var(--text)', fontFamily: 'inherit', fontSize: 13, outline: 'none', cursor: 'pointer', minWidth: 180 }}
+            value={sort} onChange={(e) => { setSort(e.target.value); search(query, 0, e.target.value); }}>
+            <option value="brand">Ordenar: Marca A→Z</option>
+            <option value="horsepower,desc">Ordenar: Mais potente</option>
+            <option value="year,desc">Ordenar: Mais novo</option>
+            <option value="price,asc">Ordenar: Menor preço</option>
+            <option value="acceleration,asc">Ordenar: Mais rápido</option>
+          </select>
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? <Spinner size={14} /> : 'Buscar'}
+          </button>
+          {query && (
+            <button type="button" className="btn btn-ghost btn-sm" onClick={() => { setQuery(''); search('', 0, sort); }}>✕ Limpar</button>
+          )}
+        </div>
+      </form>
+
+      {loading ? (
+        <div className="grid-3">{[...Array(6)].map((_, i) => <Sk key={i} h={160} />)}</div>
+      ) : results.length === 0 ? (
+        <div className="empty">
+          <div className="empty-icon">🔍</div>
+          <div className="empty-title">Nenhum resultado</div>
+          <div className="empty-sub">Tente outros termos ou ajuste os filtros</div>
+        </div>
+      ) : (
+        <>
+          <div className="table-wrap" style={{ marginBottom: 16 }}>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Veículo</th>
+                  <th>Motor</th>
+                  <th>Potência</th>
+                  <th>0-100</th>
+                  <th>Vel. Máx.</th>
+                  <th>Tração</th>
+                  <th>Preço</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map((v) => (
+                  <tr key={v.id} className="spec-table-row" onClick={() => openDetail(v.id)}>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{ width: 32, height: 32, background: 'var(--orange-dim)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, border: '1px solid rgba(232,98,42,.15)', flexShrink: 0 }}>
+                          {fuelIcon(v.fuelType)}
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 600, fontSize: 13 }}>{v.brand} {v.model}</div>
+                          <div style={{ fontSize: 11, color: 'var(--text3)' }}>{v.year} · {v.version}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{ fontSize: 13, color: 'var(--text2)' }}>{v.engine}</td>
+                    <td><span style={{ fontWeight: 700, color: 'var(--orange)' }}>{v.horsepower}</span> <span style={{ fontSize: 11, color: 'var(--text3)' }}>HP</span></td>
+                    <td style={{ fontSize: 13 }}>{v.acceleration}<span style={{ fontSize: 11, color: 'var(--text3)', marginLeft: 2 }}>s</span></td>
+                    <td style={{ fontSize: 13 }}>{v.topSpeed}<span style={{ fontSize: 11, color: 'var(--text3)', marginLeft: 2 }}>km/h</span></td>
+                    <td>
+                      <span style={{ fontSize: 11, padding: '2px 7px', borderRadius: 99, background: 'var(--bg3)', border: '1px solid var(--border)', color: 'var(--text2)', fontWeight: 600 }}>
+                        {v.drivetrain || '—'}
+                      </span>
+                    </td>
+                    <td style={{ fontWeight: 600, fontSize: 13, color: v.price > 0 ? 'var(--text)' : 'var(--text3)' }}>
+                      {v.price > 0 ? `R$ ${Number(v.price).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}` : '—'}
+                    </td>
+                    <td>
+                      <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text3)', fontWeight: 600 }}>ID:{v.id}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Pagination page={page} totalPages={totalPages} onNavigate={(p) => search(query, p, sort)} />
+        </>
+      )}
+
+      {(detail || detailLoading) && (
+        <Modal onClose={() => { setDetail(null); }} maxWidth={580}>
+          {detailLoading ? (
+            <div style={{ padding: 20 }}>
+              <Sk h={32} w={200} mb={12} /><Sk h={16} w={280} mb={8} />
+              <div className="grid-2"><Sk h={80} /><Sk h={80} /><Sk h={80} /><Sk h={80} /></div>
+            </div>
+          ) : detail && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
+                <div style={{ width: 52, height: 52, background: 'var(--orange-dim)', border: '1px solid rgba(232,98,42,.25)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
+                  {fuelIcon(detail.fuelType)}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: 'Barlow Condensed', fontSize: 22, fontWeight: 900, letterSpacing: '-.5px' }}>{detail.brand} {detail.model}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text3)' }}>{detail.year} · {detail.version}</div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  {detail.price > 0 && <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--orange)' }}>R$ {Number(detail.price).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}</div>}
+                  <div style={{ fontSize: 11, color: 'var(--text3)' }}>ID: {detail.id}</div>
+                </div>
+              </div>
+
+              <div className="grid-4" style={{ marginBottom: 16, gap: 8 }}>
+                {[['Potência', `${detail.horsepower} HP`, 'var(--orange)'], ['0-100', `${detail.acceleration}s`, 'var(--green)'], ['Torque', `${detail.torque} Nm`, 'var(--blue)'], ['Vel. Máx.', `${detail.topSpeed} km/h`, 'var(--text)']].map(([k, v, c]) => (
+                  <div key={k} style={{ background: 'var(--bg3)', borderRadius: 'var(--radius)', padding: '10px 12px', border: '1px solid var(--border)', textAlign: 'center' }}>
+                    <div style={{ fontSize: 11, color: 'var(--text3)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '.3px' }}>{k}</div>
+                    <div style={{ fontSize: 17, fontWeight: 700, color: c, fontFamily: 'Barlow Condensed' }}>{v}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 0, marginBottom: 16 }}>
+                {[
+                  ['Motor', detail.engine], ['Tração', detail.drivetrain],
+                  ['Combustível', detail.fuelType], ['Peso', `${detail.weight} kg`],
+                  ['Comprimento', `${detail.length} m`], ['Largura', `${detail.width} m`],
+                  ['Altura', `${detail.height} m`], ['Aut. Elétrica', `${detail.electricRange || 0} km`],
+                ].map(([k, v]) => (
+                  <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 4px', borderBottom: '1px solid var(--border)', fontSize: 13 }}>
+                    <span style={{ color: 'var(--text3)' }}>{k}</span>
+                    <span style={{ fontWeight: 600 }}>{v || '—'}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display: 'flex', gap: 10 }}>
+                <button className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}
+                  onClick={() => { setDetail(null); navigate('/analyze'); }}>📊 Analisar</button>
+                <button className="btn btn-outline" style={{ flex: 1, justifyContent: 'center' }}
+                  onClick={() => { setDetail(null); navigate('/compare'); }}>⚖ Comparar</button>
+                <button className="btn btn-ghost btn-sm" onClick={() => setDetail(null)}>✕ Fechar</button>
+              </div>
+            </>
+          )}
+        </Modal>
+      )}
+    </div>
+  );
+}
