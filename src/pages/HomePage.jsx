@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { garageService, historyService } from '../services';
 import { Sk } from '../components/ui/Skeleton';
 import iconeCarro from '../components/assets/vs.png';
+import mustangBanner from '../components/assets/mustang.png';
 
 import {
   Zap,
@@ -56,28 +57,27 @@ export function HomePage() {
             Sua plataforma de inteligência automotiva. Analise, compare e gerencie veículos com IA.
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <button className="btn btn-primary" onClick={() => navigate('/analyze')}>⚡ Nova Análise</button>
-            <button className="btn btn-outline" onClick={() => navigate('/compare')}>⚖ Comparar</button>
-            <button className="btn btn-ghost" onClick={() => navigate('/vehicles')}>🔍 Explorar Specs</button>
+            <button className="btn btn-primary" onClick={() => navigate('/analyze')}>Nova Análise</button>
+            <button className="btn btn-outline" onClick={() => navigate('/compare')}>Comparar</button>
+            <button className="btn btn-ghost" onClick={() => navigate('/vehicles')}>Explorar Specs</button>
           </div>
         </div>
-        <svg className="hero-svg-car" viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="150" cy="212" rx="62" ry="16" fill="#e8622a" opacity="0.15"/>
-          <ellipse cx="450" cy="212" rx="62" ry="16" fill="#e8622a" opacity="0.15"/>
-          <path d="M40 182 Q80 172 120 162 L200 108 Q258 68 330 63 Q402 58 462 76 L542 102 Q572 116 582 142 L588 182 Q560 187 40 187 Z" fill="#e8622a" opacity="0.08" stroke="#e8622a" strokeWidth="1.2" strokeOpacity="0.35"/>
-          <path d="M202 108 Q258 70 328 65 Q398 60 460 78 L536 104" stroke="#e8622a" strokeWidth="0.8" strokeOpacity="0.5" fill="none"/>
-          <line x1="260" y1="68" x2="272" y2="182" stroke="#e8622a" strokeWidth="0.5" strokeOpacity="0.2"/>
-          <line x1="380" y1="63" x2="368" y2="182" stroke="#e8622a" strokeWidth="0.5" strokeOpacity="0.2"/>
-          <rect x="264" y="78" width="118" height="24" rx="3" fill="#e8622a" fillOpacity="0.06" stroke="#e8622a" strokeWidth="0.5" strokeOpacity="0.3"/>
-          <rect x="462" y="110" width="64" height="20" rx="3" fill="#e8622a" fillOpacity="0.06" stroke="#e8622a" strokeWidth="0.5" strokeOpacity="0.25"/>
-          <circle cx="150" cy="196" r="32" stroke="#e8622a" strokeWidth="1.5" strokeOpacity="0.4" fill="none"/>
-          <circle cx="150" cy="196" r="20" stroke="#e8622a" strokeWidth="0.8" strokeOpacity="0.25" fill="none"/>
-          <circle cx="150" cy="196" r="7" fill="#e8622a" fillOpacity="0.2"/>
-          <circle cx="450" cy="196" r="32" stroke="#e8622a" strokeWidth="1.5" strokeOpacity="0.4" fill="none"/>
-          <circle cx="450" cy="196" r="20" stroke="#e8622a" strokeWidth="0.8" strokeOpacity="0.25" fill="none"/>
-          <circle cx="450" cy="196" r="7" fill="#e8622a" fillOpacity="0.2"/>
-          <path d="M522 148 L548 138 L550 158 Z" fill="#e8622a" fillOpacity="0.3"/>
-        </svg>
+        <img 
+          src={mustangBanner} 
+          alt="Mustang Background" 
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            width: '60%',
+            height: '100%',
+            objectFit: 'cover',
+            maskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to left, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)',
+            zIndex: 1,
+            pointerEvents: 'none'
+          }}
+        />
       </div>
 
       <div className="grid-4" style={{ marginBottom: 20 }}>
