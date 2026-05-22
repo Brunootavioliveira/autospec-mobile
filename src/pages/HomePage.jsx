@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { garageService, historyService } from '../services';
 import { Sk } from '../components/ui/Skeleton';
+import iconeCarro from './assets/vs.png';
 
 import {
   Zap,
@@ -96,7 +97,7 @@ export function HomePage() {
           </div>
         ))}
         <div className="stat-card">
-          <div className="stat-label">🛡 Acesso</div>
+          <div className="stat-label">Acesso</div>
           <div className="stat-value" style={{ fontSize: 15, marginTop: 6, letterSpacing: 1 }}>{user?.role || '—'}</div>
           <div className="stat-sub" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.email}</div>
         </div>
@@ -105,7 +106,7 @@ export function HomePage() {
       <div className="grid-2">
         <div className="card">
           <div className="section-header">
-            <div className="section-title">🚗 Veículos Ativos ({activeVehicles.length})</div>
+            <div className="section-title">Veículos Ativos ({activeVehicles.length})</div>
             <button className="btn btn-ghost btn-sm" onClick={() => navigate('/garage')}>Ver garage →</button>
           </div>
           {loading ? (<><Sk h={52} mb={8} /><Sk h={52} mb={8} /><Sk h={52} /></>)
@@ -132,15 +133,15 @@ export function HomePage() {
 
         <div className="card">
           <div className="section-header">
-            <div className="section-title">🕒 Ações Recentes</div>
+            <div className="section-title">Ações Recentes</div>
             <button className="btn btn-ghost btn-sm" onClick={() => navigate('/history')}>Ver histórico →</button>
           </div>
           {loading ? (<><Sk h={52} mb={8} /><Sk h={52} mb={8} /><Sk h={52} /></>)
             : recentHistory.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '28px 0' }}>
-                <div style={{ fontSize: 36, opacity: .2, marginBottom: 10 }}>📋</div>
+                <div style={{ fontSize: 36, opacity: .2, marginBottom: 10 }}><ClipboardList size={42}/></div>
                 <div style={{ color: 'var(--text3)', fontSize: 14, marginBottom: 14 }}>Nenhuma ação registrada</div>
-                <button className="btn btn-primary btn-sm" onClick={() => navigate('/analyze')}>⚡ Iniciar análise</button>
+                <button className="btn btn-primary btn-sm" onClick={() => navigate('/analyze')}>Iniciar análise</button>
               </div>
             ) : recentHistory.map((h) => (
               <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
@@ -161,7 +162,18 @@ export function HomePage() {
               </div>
             ))}
           <div style={{ marginTop: 14, background: 'var(--bg3)', borderRadius: 'var(--radius)', padding: 14, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ fontSize: 26 }}>⚡</div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <img 
+                src={iconeCarro} 
+                alt="Ícone de Porsche" 
+                style={{ 
+                  width: '40px',          // Ajusta a largura
+                  height: '40px',         // Ajusta a altura (mantenha proporcional ou igual para quadrado)
+                  borderRadius: '8px',    // Deixa os cantos arredondados como no print
+                  objectFit: 'cover'      // Garante que a imagem não fique esticada/deformada
+                }} 
+              />
+            </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Comparação rápida</div>
               <div style={{ fontSize: 12, color: 'var(--text3)' }}>Compare dois veículos com análise de IA</div>
