@@ -5,7 +5,11 @@ import { storage } from '../services/api';
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => storage.get('user'));
+  const [user, setUser] = useState({ 
+  name: "Bruno Silva", 
+  role: "ADMIN", 
+  email: "bruno@email.com" 
+});
 
   const login = async (email, password) => {
     const data = await authService.login(email, password);

@@ -20,41 +20,33 @@ import {
 } from 'lucide-react';
 
 export function HomePage() {
-  const { user } = useAuth();
+  const user = { name: "Bruno Silva", role: "ADMIN", email: "bruno@email.com" }; 
   const navigate = useNavigate();
-  const [garage, setGarage] = useState([]);
-  const [history, setHistory] = useState({ content: [], totalElements: 0 });
-  const [insights, setInsights] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    Promise.all([
-      garageService.list().catch(() => []),
-      historyService.list(0, 5).catch(() => ({ content: [], totalElements: 0 })),
-      garageService.insights().catch(() => null),
-    ]).then(([g, h, i]) => {
-      setGarage(Array.isArray(g) ? g : []);
-      setHistory(h || { content: [], totalElements: 0 });
-      setInsights(i);
-    }).finally(() => setLoading(false));
-  }, []);
+  
+  // Mude para esses valores iniciais falsos:
+  const [garage, setGarage] = useState([
+    { id: 1, active: true, nickname: "Meu Mach 1", vehicleSpec: { brand: "Ford", model: "Mustang Mach 1", year: 2023, horsepower: 483, engine: "5.0 V8" }, fleetType: "PERSONAL" }
+  ]);
+  const [history, setHistory] = useState({ content: [], totalElements: 1 });
+  const [insights, setInsights] = useState({ mostPowerful: "Mustang Mach 1" });
+  const [loading, setLoading] = useState(false);
 
   const activeVehicles = garage.filter((v) => v.active);
   const recentHistory = history?.content || [];
 
   return (
     <div className="fade-in">
-      {/* Container do Hero ajustado para comportamento de background absoluto */}
       <div className="hero" style={{ 
         marginBottom: 20, 
         position: 'relative', 
         overflow: 'hidden',
-        minHeight: '260px', 
+        minHeight: 'clamp(280px, 25vw, 380px)',
         borderRadius: 'var(--radius)',
-        background: '#f4f4f5' // 👈 Fundo claro para o card não ficar escuro
+        background: '#f3f4f6',
+        display: 'flex',
+        alignItems: 'flex-start'
       }}>
         
-        {/* Imagem do Mustang ocupando todo o fundo */}
         <img 
           src={mustangBanner} 
           alt="Mustang Background" 
@@ -64,45 +56,46 @@ export function HomePage() {
             top: 0,
             width: '100%',
             height: '100%',
-            objectFit: 'cover', // Garante que preencha de ponta a ponta
+            objectFit: 'cover', 
             zIndex: 1,
             pointerEvents: 'none'
           }}
         />
 
-        {/* Gradiente suave: começa cinza na esquerda (para dar leitura ao texto) e fica 100% TRANSPARENTE na direita para o carro brilhar limpo */}
-        <div style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          width: '100%',
-          height: '100%',
-          background: 'linear-gradient(90deg, rgba(244,244,245,0.95) 30%, rgba(244,244,245,0.7) 50%, rgba(244,244,245,0) 100%)',
-          zIndex: 2,
-          pointerEvents: 'none'
-        }} />
-
-        {/* Bloco de textos com cores escuras para contraste perfeito com o fundo claro */}
         <div className="hero-text" style={{ 
-          position: 'relative', 
-          zIndex: 3, 
-          padding: '35px 40px',
-          maxWidth: '480px' 
+          position: 'absolute', 
+          left: '25px',      
+          top: '25px',      
+          zIndex: 2, 
         }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--orange)', letterSpacing: '2.5px', textTransform: 'uppercase', marginBottom: 10 }}>
-            AutoSpec Intelligence Platform
-          </div>
-          <div className="hero-title" style={{ color: '#18181b', fontSize: '32px', fontWeight: '800', lineHeight: '1.2' }}>
+          
+          <div className="hero-title" style={{ 
+            color: '#1c1c1e', 
+            fontSize: 'clamp(10px, 3.5vw, 46px)', 
+            fontWeight: '200', 
+            lineHeight: '1.15',
+            letterSpacing: '-0.1px',
+            textTransform: 'uppercase',
+          }}>
             WELCOME TO AUTOSPEC,<br />
-            <span style={{ color: 'var(--orange)' }}>{(user?.name || 'USUÁRIO').toUpperCase()}</span>
+            {(user?.name).toUpperCase()}
           </div>
-          <div className="hero-sub" style={{ maxWidth: 380, marginTop: 10, marginBottom: 25, fontSize: '14px', color: '#52525b', fontWeight: '500' }}>
-            Sua plataforma de inteligência automotiva. Analise, compare e gerencie veículos com IA.
+
+          <div className="hero-sub" style={{ 
+            maxWidth: '500px', 
+            marginTop: '16px', 
+            fontSize: 'clamp(13px, 1.2vw, 15px)', 
+            color: '#555559', 
+            fontWeight: '600', 
+            letterSpacing: '0.5px',
+            textTransform: 'uppercase', 
+            lineHeight: '1.4'
+          }}>
+            YOUR ESSENTIAL AUTOMOTIVE <br></br>INTELLIGENCE PLATFORM
           </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <button className="btn btn-primary" onClick={() => navigate('/analyze')}>Nova Análise</button>
-            <button className="btn btn-outline" style={{ borderColor: '#d4d4d8', color: '#18181b' }} onClick={() => navigate('/compare')}>Comparar</button>
-            <button className="btn btn-ghost" style={{ color: '#52525b' }} onClick={() => navigate('/vehicles')}>Explorar Specs</button>
+
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: '30px' }}>
+            <button className="btn btn-outline" style={{ borderColor: '#9ca3af', color: '#1c1c1e' }} onClick={() => navigate('/compare')}>Comparar</button>
           </div>
         </div>
       </div>
