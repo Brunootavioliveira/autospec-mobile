@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { garageService, historyService } from '../services';
 import { Sk } from '../components/ui/Skeleton';
-import iconeCarro from './assets/vs.png';
+import iconeCarro from '../assets/vs.png';
 
 import {
   Zap,
@@ -165,12 +165,12 @@ export function HomePage() {
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <img 
                 src={iconeCarro} 
-                alt="Ícone de Porsche" 
+                alt="Comparativo Ford" // Atualizado aqui
                 style={{ 
-                  width: '40px',          // Ajusta a largura
-                  height: '40px',         // Ajusta a altura (mantenha proporcional ou igual para quadrado)
-                  borderRadius: '8px',    // Deixa os cantos arredondados como no print
-                  objectFit: 'cover'      // Garante que a imagem não fique esticada/deformada
+                  width: '40px',          
+                  height: '40px',         
+                  borderRadius: '8px',    
+                  objectFit: 'cover'      
                 }} 
               />
             </div>
