@@ -119,7 +119,7 @@ export function ComparePage() {
 
           <div style={{ display: 'flex', gap: 10, marginBottom: 20, alignItems: 'center' }}>
             <button className="btn btn-primary btn-lg" onClick={compare} disabled={comparing || !vehicleA || !vehicleB}>
-              {comparing ? <><Spinner size={16} /> Comparando...</> : '⚖ Comparar Veículos'}
+              {comparing ? <><Spinner size={16} /> Comparando...</> : 'Comparar Veículos'}
             </button>
             {result && <button className="btn btn-outline" onClick={() => setShowSaveModal(true)}>Salvar resultado</button>}
             {(vehicleA || vehicleB) && !comparing && (

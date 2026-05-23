@@ -210,11 +210,8 @@ export function GeneratePage() {
               className="btn btn-primary"
               style={{ 
               width: '100%', 
-              justifyContent: 'center', 
-              background:'rgba(255, 255, 255, 0.5)', 
-              color: '#003478',         
-              border: '#003478'             
-            }}
+              justifyContent: 'center',                    
+              }}
               onClick={generate}
               disabled={generating || !canGenerate}
             >

@@ -56,7 +56,8 @@ function VehicleSearchInput({ label, value, onSelect }) {
           ))}
         </div>
       )}
-      {value && <div style={{ fontSize: 12, color: 'var(--orange)' }}>✓ {value.brand} {value.model} {value.year} (ID:{value.id})</div>}
+      {/* TROCADO: var(--orange) alterado para var(--blue) */}
+      {value && <div style={{ fontSize: 12, color: 'var(--blue)', fontWeight: 600 }}>✓ {value.brand} {value.model} {value.year} (ID:{value.id})</div>}
     </div>
   );
 }
@@ -94,25 +95,25 @@ export function ReportsPage() {
   };
 
   const downloadReport = async () => {
-  if (!reportMeta?.downloadUrl) return;
-  try {
-    let pathname = reportMeta.downloadUrl;
-    if (pathname.startsWith('http')) {
-      pathname = new URL(pathname).pathname;
+    if (!reportMeta?.downloadUrl) return;
+    try {
+      let pathname = reportMeta.downloadUrl;
+      if (pathname.startsWith('http')) {
+        pathname = new URL(pathname).pathname;
+      }
+      const path = pathname.replace('/api/v1', '');
+      const response = await reportService.download(path);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute('download', 'report.pdf');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (e) {
+      toast('Erro ao baixar PDF', 'error');
     }
-    const path = pathname.replace('/api/v1', '');
-    const response = await reportService.download(path);
-    const blob = new Blob([response.data], { type: 'application/pdf' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.setAttribute('download', 'report.pdf');
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  } catch (e) {
-    toast('Erro ao baixar PDF', 'error');
-  }
-};
+  };
 
   return (
     <div className="fade-in">
@@ -202,7 +203,8 @@ export function ReportsPage() {
         <div>
           {generating ? (
             <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 340, gap: 16 }}>
-              <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--orange-dim)', border: '1px solid rgba(232,98,42,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {/* TROCADO: Fundo alterado de var(--orange-dim) para var(--blue-dim) e borda para var(--blue) */}
+              <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--blue-dim)', border: '1px solid rgba(0,52,120,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Spinner size={24} />
               </div>
               <div style={{ textAlign: 'center' }}>
@@ -236,8 +238,9 @@ export function ReportsPage() {
                 ))}
               </div>
 
-              <div style={{ padding: '10px 14px', background: 'var(--orange-dim)', borderRadius: 'var(--radius)', border: '1px solid rgba(232,98,42,.2)', marginBottom: 12 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--orange)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '.4px' }}>URL de Download</div>
+              {/* TROCADO: Background alterado de var(--orange-dim) para var(--blue-dim), borda e texto para var(--blue) */}
+              <div style={{ padding: '10px 14px', background: 'var(--blue-dim)', borderRadius: 'var(--radius)', border: '1px solid rgba(0,52,120,.2)', marginBottom: 12 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--blue)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '.4px' }}>URL de Download</div>
                 <div style={{ fontSize: 11, fontFamily: 'monospace', color: 'var(--text2)', wordBreak: 'break-all', lineHeight: 1.5 }}>http://localhost:8081{reportMeta.downloadUrl}</div>
               </div>
 

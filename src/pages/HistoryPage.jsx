@@ -102,39 +102,47 @@ export function HistoryPage() {
         )}
       </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
-        {[
-          { type: 'ANALYSIS', label: 'Análises'},
-          { type: 'COMPARISON', label: 'Comparações'},
-          { type: 'SERVICE_RECORD', label: 'Service Records'},
-        ].map(({ type, label }) => (
-          <div key={type}
-            onClick={() => setFilter((f) => f === type ? 'ALL' : type)}
-            style={{
-              flex: 1, background: 'var(--bg2)',
-              border: `1px solid ${filter === type ? TYPE_COLOR[type] : 'var(--border)'}`,
-              borderRadius: 'var(--radius-lg)', padding: '14px 16px', cursor: 'pointer',
-              transition: 'border-color .15s', userSelect: 'none',
-            }}>
-            <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
-              {TYPE_ICON[type]} {label}
-            </div>
-            <div style={{ fontSize: 24, fontWeight: 900, fontFamily: 'Barlow Condensed', color: filter === type ? TYPE_COLOR[type] : 'var(--text)' }}>
-              {loading ? '—' : stats[type]}
-            </div>
-            {filter === type && <div style={{ fontSize: 11, color: TYPE_COLOR[type], marginTop: 4, fontWeight: 600 }}>Filtrando ↑</div>}
-          </div>
-        ))}
-        <div style={{
-          flex: 1, background: 'var(--bg2)',
-          border: `1px solid ${filter === 'ALL' ? 'var(--orange)' : 'var(--border)'}`,
-          borderRadius: 'var(--radius-lg)', padding: '14px 16px', cursor: 'pointer', transition: 'border-color .15s',
-        }} onClick={() => setFilter('ALL')}>
-          <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6 }}>Total</div>
-          <div style={{ fontSize: 24, fontWeight: 900, fontFamily: 'Barlow Condensed', color: filter === 'ALL' ? 'var(--orange)' : 'var(--text)' }}>{loading ? '—' : total}</div>
-          {filter === 'ALL' && <div style={{ fontSize: 11, color: 'var(--orange)', marginTop: 4, fontWeight: 600 }}>Todos ↑</div>}
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 12, marginBottom: 20 }}>
+  {[
+    { type: 'ANALYSIS',      label: 'Análises' },
+    { type: 'COMPARISON',    label: 'Comparações' },
+    { type: 'SERVICE_RECORD',label: 'Service Records' },
+  ].map(({ type, label }) => (
+    <div
+      key={type}
+      onClick={() => setFilter((f) => f === type ? 'ALL' : type)}
+      style={{
+        background: 'var(--bg2)',
+        border: `1px solid ${filter === type ? TYPE_COLOR[type] : 'var(--border)'}`,
+        borderRadius: 'var(--radius-lg)', padding: '14px 16px',
+        cursor: 'pointer', transition: 'border-color .15s', userSelect: 'none',
+      }}
+    >
+      <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+        {TYPE_ICON[type]} {label}
       </div>
+      <div style={{ fontSize: 24, fontWeight: 900, fontFamily: 'Barlow Condensed', color: filter === type ? TYPE_COLOR[type] : 'var(--text)' }}>
+        {loading ? '—' : stats[type]}
+      </div>
+      {filter === type && <div style={{ fontSize: 11, color: TYPE_COLOR[type], marginTop: 4, fontWeight: 600 }}>Filtrando ↑</div>}
+    </div>
+  ))}
+  <div
+    style={{
+      background: 'var(--bg2)',
+      border: `1px solid ${filter === 'ALL' ? 'var(--orange)' : 'var(--border)'}`,
+      borderRadius: 'var(--radius-lg)', padding: '14px 16px',
+      cursor: 'pointer', transition: 'border-color .15s',
+    }}
+    onClick={() => setFilter('ALL')}
+  >
+    <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6 }}>Total</div>
+    <div style={{ fontSize: 24, fontWeight: 900, fontFamily: 'Barlow Condensed', color: filter === 'ALL' ? 'var(--orange)' : 'var(--text)' }}>
+      {loading ? '—' : total}
+    </div>
+    {filter === 'ALL' && <div style={{ fontSize: 11, color: 'var(--orange)', marginTop: 4, fontWeight: 600 }}>Todos ↑</div>}
+  </div>
+</div>
 
       <div className="table-wrap">
         <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}>

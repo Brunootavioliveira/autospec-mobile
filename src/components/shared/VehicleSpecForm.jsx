@@ -3,6 +3,22 @@ import { vehicleService } from '../../services';
 import { useToast } from '../../context/ToastContext';
 import { Spinner } from '../ui/Skeleton';
 
+import {
+  Zap,
+  CarFront,
+  ClipboardList,
+  Shield,
+  Activity,
+  Clock3,
+  Plus,
+  Sparkles,
+  Search,
+  ArrowRight,
+  BarChart, 
+  Wrench,   
+  Scale
+} from 'lucide-react';
+
 export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
   const [form, setForm] = useState({ brand: '', model: '', version: '', year: new Date().getFullYear() });
   const [searchQuery, setSearchQuery] = useState('');
@@ -37,7 +53,9 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
 
   if (selected) return (
     <div className="compare-slot filled">
-      <div style={{ fontSize: 32 }}>🚘</div>
+      <div style={{ color: 'var(--orange)', marginBottom: 4 }}>
+        <CarFront size={32} strokeWidth={1.5} />
+      </div>
       <div style={{ fontWeight: 700, fontSize: 15 }}>{selected.brand} {selected.model}</div>
       <div style={{ fontSize: 13, color: 'var(--orange)' }}>{selected.year} · {selected.version}</div>
       <div style={{ fontSize: 12, color: 'var(--text3)' }}>{selected.horsepower}HP · {selected.engine}</div>
@@ -49,8 +67,14 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
     <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 16 }}>
       <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text2)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.4px' }}>{label}</div>
       <div className="tabs" style={{ marginBottom: 14 }}>
-        <button className={`tab ${mode === 'search' ? 'active' : ''}`} onClick={() => setMode('search')}>🔍 Buscar existente</button>
-        <button className={`tab ${mode === 'generate' ? 'active' : ''}`} onClick={() => setMode('generate')}>⚡ Gerar com IA</button>
+      <button 
+                className={`tab ${mode === 'search' ? 'active' : ''}`} 
+                onClick={() => setMode('search')}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+              >
+                <Search size={14} /> Buscar existente
+        </button>        
+        <button className={`tab ${mode === 'generate' ? 'active' : ''}`} onClick={() => setMode('generate')}>Gerar com IA</button>
       </div>
       {mode === 'search' ? (
         <>
@@ -104,7 +128,7 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
             </div>
           </div>
           <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={generate} disabled={generating}>
-            {generating ? <><Spinner size={14} /> Gerando com IA...</> : '⚡ Gerar Especificação'}
+            {generating ? <><Spinner size={14} /> Gerando com IA...</> : 'Gerar Especificação'}
           </button>
         </>
       )}

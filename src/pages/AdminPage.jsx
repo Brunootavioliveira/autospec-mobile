@@ -3,6 +3,7 @@ import { userService } from '../services';
 import { useToast } from '../context/ToastContext';
 import { Spinner } from '../components/ui/Skeleton';
 
+import { Search} from 'lucide-react';
 const ROLES = ['VIEWER', 'ANALYST', 'ADMIN'];
 
 const ROLE_BADGE = {
@@ -79,13 +80,29 @@ export function AdminPage() {
       </div>
 
       <div className="card">
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 20, position: 'relative', width: '100%', maxWidth: 340 }}>
+          <span style={{ 
+            position: 'absolute', 
+            left: 12, 
+            top: '50%', 
+            transform: 'translateY(-50%)', 
+            color: 'var(--text3)', 
+            display: 'flex', 
+            alignItems: 'center',
+            pointerEvents: 'none' 
+          }}>
+            <Search size={16} strokeWidth={1.8} />
+          </span>
+
           <input
             className="form-input"
-            placeholder="🔍  Buscar por nome ou email..."
+            placeholder="Buscar por nome ou email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ maxWidth: 340 }}
+            style={{ 
+              width: '100%', 
+              paddingLeft: 36
+            }}
           />
         </div>
 

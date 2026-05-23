@@ -34,7 +34,7 @@ export function SettingsPage() {
   const changePwd = async (e) => {
     e.preventDefault();
     if (pwd.newPassword !== pwd.confirmNewPassword) { toast('As senhas não coincidem', 'error'); return; }
-    if (pwd.newPassword.length < 6) { toast('Senha mínima: 6 caracteres', 'error'); return; }
+    if (pwd.newPassword.length < 8) { toast('Senha mínima: 8 caracteres', 'error'); return; }
     setSaving(true);
     try {
       await userService.changePassword(pwd);
@@ -82,7 +82,7 @@ export function SettingsPage() {
               <div>
                 <div style={{ fontSize: 18, fontWeight: 700 }}>{user?.name}</div>
                 <div style={{ fontSize: 13, color: 'var(--text3)' }}>{user?.email}</div>
-                <span className="badge badge-orange" style={{ marginTop: 4 }}>{user?.role}</span>
+                <span className="badge badge-blue" style={{ marginTop: 4 }}>{user?.role}</span>
               </div>
             </div>
             <form onSubmit={saveProfile}>
@@ -102,7 +102,7 @@ export function SettingsPage() {
                 <input className="form-input" value={user?.role || ''} disabled style={{ opacity: .5, cursor: 'not-allowed' }} />
               </div>
               <div style={{ display: 'flex', gap: 10 }}>
-                <button type="submit" className="btn btn-primary" disabled={saving}>
+                <button type="submit" className="btn btn-primary" disabled={saving}> 
                   {saving ? <><Spinner size={14} /> Salvando...</> : 'Salvar alterações'}
                 </button>
                 <button type="button" className="btn btn-danger btn-sm" onClick={logout}>Sair da conta</button>
@@ -140,10 +140,10 @@ export function SettingsPage() {
               </div>
               <div className="form-group">
                 <label className="form-label">Nova Senha</label>
-                <input className="form-input" type="password" placeholder="Mín. 6 caracteres"
+                <input className="form-input" type="password" placeholder="Mín. 8 caracteres"
                   value={pwd.newPassword} onChange={(e) => setPwd((p) => ({ ...p, newPassword: e.target.value }))} required minLength={6} />
                 <div className={`pwd-req ${pwd.newPassword.length >= 6 ? 'ok' : ''}`}>
-                  {pwd.newPassword.length >= 6 ? '✓' : '○'} Mínimo 6 caracteres
+                  {pwd.newPassword.length >= 8 ? '✓' : '○'} Mínimo 8 caracteres
                 </div>
               </div>
               <div className="form-group">

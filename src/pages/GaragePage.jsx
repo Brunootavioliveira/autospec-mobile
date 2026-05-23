@@ -89,7 +89,7 @@ export function GaragePage() {
 
   return (
     <div className="fade-in">
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20, gap: 12, flexWrap: 'wrap' }}>
         <div>
           <div className="page-title">Garage</div>
           <div className="page-sub">Gerencie seus veículos pessoais e de trabalho</div>
@@ -97,24 +97,24 @@ export function GaragePage() {
         <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>+ Adicionar Veículo</button>
       </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
-        <div className="stat-card" style={{ flex: 1 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 12, marginBottom: 20 }}>
+        <div className="stat-card">
           <div className="stat-label">Total</div>
           <div className="stat-value">{insights?.totalVehicles ?? (loading ? '—' : vehicles.length)}</div>
         </div>
-        <div className="stat-card" style={{ flex: 1 }}>
+        <div className="stat-card">
           <div className="stat-label">Frota Ativa</div>
-          <div className="stat-value" style={{ color: 'var(--text)' }}>{insights?.activeFleet ?? '—'}</div>
+          <div className="stat-value">{insights?.activeFleet ?? '—'}</div>
         </div>
-        <div className="stat-card" style={{ flex: 2 }}>
+        <div className="stat-card">
           <div className="stat-label">Mais Potente</div>
           <div className="stat-value" style={{ fontSize: 15, marginTop: 4 }}>{insights?.mostPowerful || '—'}</div>
         </div>
-        <div className="stat-card" style={{ flex: 1 }}>
+        <div className="stat-card">
           <div className="stat-label">Pessoal</div>
           <div className="stat-value">{vehicles.filter((v) => v.fleetType === 'PERSONAL').length}</div>
         </div>
-        <div className="stat-card" style={{ flex: 1 }}>
+        <div className="stat-card">
           <div className="stat-label">Trabalho</div>
           <div className="stat-value">{vehicles.filter((v) => v.fleetType === 'WORK').length}</div>
         </div>
