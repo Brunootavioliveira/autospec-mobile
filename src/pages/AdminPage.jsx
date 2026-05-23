@@ -28,7 +28,7 @@ export function AdminPage() {
   const toast = useToast();
   const [users, setUsers]       = useState([]);
   const [loading, setLoading]   = useState(true);
-  const [saving, setSaving]     = useState(null); // userId sendo salvo
+  const [saving, setSaving]     = useState(null);
   const [search, setSearch]     = useState('');
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export function AdminPage() {
       setUsers((prev) =>
         prev.map((u) => u.id === userId ? { ...u, role: newRole } : u)
       );
-      toast('Role atualizada com sucesso ✓', 'success');
+      toast('Role atualizada com sucesso', 'success');
     } catch (err) {
       toast(err.message, 'error');
     } finally {
@@ -63,7 +63,7 @@ export function AdminPage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">👥 Gerenciamento de Usuários</div>
+      <div className="page-title">Gerenciamento de Usuários</div>
       <div className="page-sub">Atribua permissões aos usuários cadastrados</div>
 
       <div className="grid-3" style={{ marginBottom: 24 }}>

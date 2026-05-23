@@ -26,7 +26,7 @@ export function SettingsPage() {
     try {
       await userService.update({ name: profile.name });
       await refreshProfile();
-      toast('Perfil atualizado! ✓', 'success');
+      toast('Perfil atualizado!', 'success');
     } catch (err) { toast(err.message, 'error'); }
     finally { setSaving(false); }
   };
@@ -64,12 +64,12 @@ export function SettingsPage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">⚙ Configurações</div>
+      <div className="page-title">Configurações</div>
       <div className="page-sub">Gerencie seu perfil, segurança e sessões</div>
 
       <div className="tabs" style={{ maxWidth: 500 }}>
-        <button className={`tab ${tab === 'profile' ? 'active' : ''}`} onClick={() => setTab('profile')}>👤 Perfil</button>
-        <button className={`tab ${tab === 'security' ? 'active' : ''}`} onClick={() => setTab('security')}>🔒 Senha & Sessões</button>
+        <button className={`tab ${tab === 'profile' ? 'active' : ''}`} onClick={() => setTab('profile')}>Perfil</button>
+        <button className={`tab ${tab === 'security' ? 'active' : ''}`} onClick={() => setTab('security')}>Senha & Sessões</button>
       </div>
 
       {tab === 'profile' && (
@@ -111,7 +111,7 @@ export function SettingsPage() {
           </div>
 
           <div className="card">
-            <div className="section-title" style={{ marginBottom: 16 }}>ℹ Informações da Conta</div>
+            <div className="section-title" style={{ marginBottom: 16 }}>Informações da Conta</div>
             {[
               ['ID do usuário', '•••• (protegido)'],
               ['Email', user?.email],
@@ -131,7 +131,7 @@ export function SettingsPage() {
       {tab === 'security' && (
         <div className="grid-2">
           <div className="card">
-            <div className="section-title" style={{ marginBottom: 16 }}>🔒 Alterar Senha</div>
+            <div className="section-title" style={{ marginBottom: 16 }}>Alterar Senha</div>
             <form onSubmit={changePwd}>
               <div className="form-group">
                 <label className="form-label">Senha Atual</label>
@@ -164,7 +164,7 @@ export function SettingsPage() {
 
           <div className="card">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-              <div className="section-title">💻 Sessões Ativas</div>
+              <div className="section-title">Sessões Ativas</div>
               {sessions.length > 1 && (
                 <button className="btn btn-danger btn-sm" onClick={revokeAll}>Revogar outras</button>
               )}

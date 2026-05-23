@@ -82,19 +82,18 @@ export function ComparePage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">⚖ Comparador de Veículos</div>
+      <div className="page-title">Comparador de Veículos</div>
       <div className="page-sub">Compare specs técnicas lado a lado com análise de IA</div>
 
       <div className="tabs" style={{ maxWidth: 380, marginBottom: 20 }}>
-        <button className={`tab ${activeTab === 'compare' ? 'active' : ''}`} onClick={() => setActiveTab('compare')}>⚖ Nova Comparação</button>
-        <button className={`tab ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>💾 Salvas ({savedList.length})</button>
+        <button className={`tab ${activeTab === 'compare' ? 'active' : ''}`} onClick={() => setActiveTab('compare')}>Nova Comparação</button>
+        <button className={`tab ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>Salvas ({savedList.length})</button>
       </div>
 
       {activeTab === 'saved' ? (
         <div>
           {savedList.length === 0 ? (
             <div className="empty">
-              <div className="empty-icon">📑</div>
               <div className="empty-title">Nenhuma comparação salva</div>
               <div className="empty-sub">Faça uma comparação e salve-a para acessar depois</div>
               <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setActiveTab('compare')}>Fazer comparação</button>
@@ -122,7 +121,7 @@ export function ComparePage() {
             <button className="btn btn-primary btn-lg" onClick={compare} disabled={comparing || !vehicleA || !vehicleB}>
               {comparing ? <><Spinner size={16} /> Comparando...</> : '⚖ Comparar Veículos'}
             </button>
-            {result && <button className="btn btn-outline" onClick={() => setShowSaveModal(true)}>💾 Salvar resultado</button>}
+            {result && <button className="btn btn-outline" onClick={() => setShowSaveModal(true)}>Salvar resultado</button>}
             {(vehicleA || vehicleB) && !comparing && (
               <button className="btn btn-ghost btn-sm" onClick={() => { setVehicleA(null); setVehicleB(null); setResult(null); }}>↺ Reiniciar</button>
             )}
@@ -166,7 +165,6 @@ export function ComparePage() {
 
               {result.summary && (
                 <div style={{ padding: '14px 18px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', marginBottom: 16, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                  <div style={{ fontSize: 20, flexShrink: 0 }}>🤖</div>
                   <div>
                     <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 5 }}>Resumo da IA</div>
                     <div style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.65 }}>{result.summary}</div>
@@ -215,7 +213,7 @@ export function ComparePage() {
 
       {showSaveModal && (
         <Modal onClose={() => setShowSaveModal(false)} maxWidth={420}>
-          <div className="modal-title">💾 Salvar Comparação</div>
+          <div className="modal-title">Salvar Comparação</div>
           <div className="modal-sub">Dê um nome para esta comparação</div>
           <div className="form-group">
             <label className="form-label">Título (opcional)</label>
@@ -225,7 +223,7 @@ export function ComparePage() {
           <div className="modal-actions">
             <button className="btn btn-outline" onClick={() => setShowSaveModal(false)}>Cancelar</button>
             <button className="btn btn-primary" onClick={saveComparison} disabled={saving}>
-              {saving ? <><Spinner size={14} /> Salvando...</> : '💾 Salvar'}
+              {saving ? <><Spinner size={14} /> Salvando...</> : 'Salvar'}
             </button>
           </div>
         </Modal>

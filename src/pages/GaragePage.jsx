@@ -91,7 +91,7 @@ export function GaragePage() {
     <div className="fade-in">
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
-          <div className="page-title">🏎 Garage</div>
+          <div className="page-title">Garage</div>
           <div className="page-sub">Gerencie seus veículos pessoais e de trabalho</div>
         </div>
         <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>+ Adicionar Veículo</button>
@@ -104,10 +104,10 @@ export function GaragePage() {
         </div>
         <div className="stat-card" style={{ flex: 1 }}>
           <div className="stat-label">Frota Ativa</div>
-          <div className="stat-value" style={{ color: 'var(--green)' }}>{insights?.activeFleet ?? '—'}</div>
+          <div className="stat-value" style={{ color: 'var(--text)' }}>{insights?.activeFleet ?? '—'}</div>
         </div>
         <div className="stat-card" style={{ flex: 2 }}>
-          <div className="stat-label">🏆 Mais Potente</div>
+          <div className="stat-label">Mais Potente</div>
           <div className="stat-value" style={{ fontSize: 15, marginTop: 4 }}>{insights?.mostPowerful || '—'}</div>
         </div>
         <div className="stat-card" style={{ flex: 1 }}>
@@ -123,7 +123,7 @@ export function GaragePage() {
       <div className="pill-filters">
         {['ALL', 'PERSONAL', 'WORK'].map((f) => (
           <button key={f} className={`pill ${fleetFilter === f ? 'active' : ''}`} onClick={() => setFleetFilter(f)}>
-            {f === 'ALL' ? '🚗 Todos' : f === 'PERSONAL' ? '👤 Pessoal' : '💼 Trabalho'}
+            {f === 'ALL' ? 'Todos' : f === 'PERSONAL' ? 'Pessoal' : 'Trabalho'}
           </button>
         ))}
         <span style={{ fontSize: 13, color: 'var(--text3)', marginLeft: 'auto' }}>{filtered.length} veículo{filtered.length !== 1 ? 's' : ''}</span>
@@ -135,15 +135,13 @@ export function GaragePage() {
         <div className="empty">
           <div className="empty-icon">🏎</div>
           <div className="empty-title">Garage vazia</div>
-          <div className="empty-sub">Adicione veículos para começar a gerenciar sua frota</div>
-          <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setShowAddModal(true)}>+ Adicionar Veículo</button>
+          <button className="btn btn-primary" style={{ marginTop: 20 }} onClick={() => setShowAddModal(true)}>+ Adicionar Veículo</button>
         </div>
       ) : (
         <div className="grid-3">
           {filtered.map((v) => (
             <div key={v.id} className="vehicle-card">
               <div className="vehicle-card-header">
-                <div className="vehicle-icon">🚘</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 700, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {v.nickname || `${v.vehicleSpec.brand} ${v.vehicleSpec.model}`}

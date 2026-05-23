@@ -4,6 +4,18 @@ import { useToast } from '../context/ToastContext';
 import { vehicleService } from '../services';
 import { Modal } from '../components/ui/Modal';
 import { Sk, Spinner } from '../components/ui/Skeleton';
+import {
+  Zap,
+  CarFront,
+  ClipboardList,
+  Shield,
+  Activity,
+  Clock3,
+  Plus,
+  Sparkles,
+  Search,
+  ArrowRight
+} from 'lucide-react';
 
 const PAGE_SIZE = 12;
 
@@ -82,15 +94,25 @@ export function VehiclesPage() {
     <div className="fade-in">
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
-          <div className="page-title">🔍 Catálogo de Veículos</div>
-          <div className="page-sub">Explore e busque specs de veículos geradas por IA · {totalElements} registros</div>
+          <div className="page-title">Catálogo de Veículos</div>
+          <div className="page-sub">Explore e busque specs de veículos geradas por IA - {totalElements} registros</div>
         </div>
       </div>
 
       <form onSubmit={handleSearch}>
         <div className="filter-bar">
           <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
-            <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', color: 'var(--text3)', fontSize: 15, pointerEvents: 'none' }}>🔍</span>
+            <Search 
+              size={16} 
+              style={{ 
+                position: 'absolute', 
+                left: 11, 
+                top: '50%', 
+                transform: 'translateY(-50%)', 
+                color: 'var(--text3)', 
+                pointerEvents: 'none' 
+              }} 
+            />
             <input ref={inputRef} className="form-input" style={{ paddingLeft: 34 }}
               placeholder="Buscar por marca, modelo, versão..."
               value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -104,7 +126,18 @@ export function VehiclesPage() {
             <option value="price,asc">Ordenar: Menor preço</option>
             <option value="acceleration,asc">Ordenar: Mais rápido</option>
           </select>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
+          <button style={{
+                padding: '8px 16px',
+                borderRadius: 'var(--radius)',
+                border: '1px solid #ffffff',
+                background: 'transparent',   
+                color: '#fff',            
+                fontWeight: '600',
+                fontSize: '13px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                
+              }} disabled={loading}>
             {loading ? <Spinner size={14} /> : 'Buscar'}
           </button>
           {query && (
@@ -117,9 +150,10 @@ export function VehiclesPage() {
         <div className="grid-3">{[...Array(6)].map((_, i) => <Sk key={i} h={160} />)}</div>
       ) : results.length === 0 ? (
         <div className="empty">
-          <div className="empty-icon">🔍</div>
+          <div className="empty-icon">
+            <Search size={42} strokeWidth={1.5} />
+          </div>
           <div className="empty-title">Nenhum resultado</div>
-          <div className="empty-sub">Tente outros termos ou ajuste os filtros</div>
         </div>
       ) : (
         <>
@@ -223,9 +257,9 @@ export function VehiclesPage() {
 
               <div style={{ display: 'flex', gap: 10 }}>
                 <button className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}
-                  onClick={() => { setDetail(null); navigate('/analyze'); }}>📊 Analisar</button>
+                  onClick={() => { setDetail(null); navigate('/analyze'); }}>Analisar</button>
                 <button className="btn btn-outline" style={{ flex: 1, justifyContent: 'center' }}
-                  onClick={() => { setDetail(null); navigate('/compare'); }}>⚖ Comparar</button>
+                  onClick={() => { setDetail(null); navigate('/compare'); }}>Comparar</button>
                 <button className="btn btn-ghost btn-sm" onClick={() => setDetail(null)}>✕ Fechar</button>
               </div>
             </>

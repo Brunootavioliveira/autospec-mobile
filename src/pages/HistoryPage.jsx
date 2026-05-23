@@ -3,8 +3,20 @@ import { useToast } from '../context/ToastContext';
 import { historyService } from '../services';
 import { Sk } from '../components/ui/Skeleton';
 
+import {
+  Zap,
+  CarFront,
+  ClipboardList,
+  Shield,
+  Activity,
+  Clock3,
+  Plus,
+  Sparkles,
+  Search,
+  ArrowRight
+} from 'lucide-react';
+
 const TYPE_COLOR = { ANALYSIS: 'var(--blue)', COMPARISON: 'var(--orange)', SERVICE_RECORD: 'var(--green)' };
-const TYPE_ICON  = { ANALYSIS: '📊', COMPARISON: '⚖', SERVICE_RECORD: '🔧' };
 const TYPE_BG    = { ANALYSIS: 'rgba(59,130,246,.1)', COMPARISON: 'rgba(232,98,42,.1)', SERVICE_RECORD: 'rgba(34,201,122,.1)' };
 const TYPE_LABEL = { ANALYSIS: 'Análise', COMPARISON: 'Comparação', SERVICE_RECORD: 'Service' };
 
@@ -75,19 +87,19 @@ export function HistoryPage() {
     <div className="fade-in">
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
-          <div className="page-title">🕒 Histórico</div>
+          <div className="page-title">Histórico</div>
           <div className="page-sub">Todas as suas análises, comparações e registros de serviço</div>
         </div>
         {history.length > 0 && (
-          <button className="btn btn-danger btn-sm" onClick={clearAll}>🗑 Limpar tudo</button>
+          <button className="btn btn-danger btn-sm" onClick={clearAll}>Limpar tudo</button>
         )}
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
         {[
-          { type: 'ANALYSIS', label: 'Análises', icon: '📊' },
-          { type: 'COMPARISON', label: 'Comparações', icon: '⚖' },
-          { type: 'SERVICE_RECORD', label: 'Service Records', icon: '🔧' },
+          { type: 'ANALYSIS', label: 'Análises'},
+          { type: 'COMPARISON', label: 'Comparações'},
+          { type: 'SERVICE_RECORD', label: 'Service Records'},
         ].map(({ type, label, icon }) => (
           <div key={type}
             onClick={() => setFilter((f) => f === type ? 'ALL' : type)}
@@ -109,7 +121,7 @@ export function HistoryPage() {
           border: `1px solid ${filter === 'ALL' ? 'var(--orange)' : 'var(--border)'}`,
           borderRadius: 'var(--radius-lg)', padding: '14px 16px', cursor: 'pointer', transition: 'border-color .15s',
         }} onClick={() => setFilter('ALL')}>
-          <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6 }}>📋 Total</div>
+          <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6 }}>Total</div>
           <div style={{ fontSize: 24, fontWeight: 900, fontFamily: 'Barlow Condensed', color: filter === 'ALL' ? 'var(--orange)' : 'var(--text)' }}>{loading ? '—' : total}</div>
           {filter === 'ALL' && <div style={{ fontSize: 11, color: 'var(--orange)', marginTop: 4, fontWeight: 600 }}>Todos ↑</div>}
         </div>
@@ -132,7 +144,9 @@ export function HistoryPage() {
           </div>
         ) : history.length === 0 ? (
           <div className="empty">
-            <div className="empty-icon">📋</div>
+            <div className="empty-icon">
+              <ClipboardList size={42} strokeWidth={1.5} />
+            </div>
             <div className="empty-title">Nenhum registro encontrado</div>
             <div className="empty-sub">
               {filter !== 'ALL' ? `Nenhum registro do tipo "${TYPE_LABEL[filter]}"` : 'Seu histórico de ações aparecerá aqui'}

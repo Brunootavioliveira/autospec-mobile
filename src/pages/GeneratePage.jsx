@@ -164,16 +164,16 @@ export function GeneratePage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">⚡ Gerar Especificação</div>
+      <div className="page-title">Gerar Especificação</div>
       <div className="page-sub">Informe um veículo e a IA retorna as especificações técnicas completas</div>
 
       <div className="card" style={{ marginBottom: 20 }}>
         <div className="tabs" style={{ marginBottom: 18 }}>
           <button className={`tab ${tab === 'generate' ? 'active' : ''}`} onClick={() => { setTab('generate'); setResult(null); }}>
-            ⚡ Gerar com IA
+            Gerar com IA
           </button>
           <button className={`tab ${tab === 'search' ? 'active' : ''}`} onClick={() => { setTab('search'); setResult(null); }}>
-            🔍 Buscar existente
+            Buscar existente
           </button>
         </div>
 
@@ -208,11 +208,17 @@ export function GeneratePage() {
             </div>
             <button
               className="btn btn-primary"
-              style={{ width: '100%', justifyContent: 'center' }}
+              style={{ 
+              width: '100%', 
+              justifyContent: 'center', 
+              background:'rgba(255, 255, 255, 0.5)', 
+              color: '#003478',         
+              border: '#003478'             
+            }}
               onClick={generate}
               disabled={generating || !canGenerate}
             >
-              {generating ? <><Spinner size={15} /> Gerando com IA...</> : '⚡ Gerar Especificação'}
+              {generating ? <><Spinner size={15} /> Gerando com IA...</> : 'Gerar Especificação'}
             </button>
           </>
         )}
@@ -229,7 +235,7 @@ export function GeneratePage() {
                 style={{ flex: 1 }}
               />
               <button className="btn btn-outline" onClick={search} disabled={searching}>
-                {searching ? <Spinner size={14} /> : '🔍 Buscar'}
+                {searching ? <Spinner size={14} /> : 'Buscar'}
               </button>
             </div>
             {searchResults.length > 0 && (

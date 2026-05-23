@@ -4,6 +4,19 @@ import { useAuth } from '../../context/AuthContext';
 import { vehicleService } from '../../services';
 import { Spinner } from '../ui/Skeleton';
 
+import {
+  Zap,
+  CarFront,
+  ClipboardList,
+  Shield,
+  Activity,
+  Clock3,
+  Plus,
+  Sparkles,
+  Search,
+  ArrowRight
+} from 'lucide-react';
+
 export function Topbar() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -65,8 +78,21 @@ export function Topbar() {
   return (
     <div className="topbar">
       <div ref={searchRef} style={{ position: 'relative', flex: 1, maxWidth: 520 }}>
-        <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text3)', fontSize: 15 }}>
-          {searchLoading ? <Spinner size={13} /> : '🔍'}
+        <span style={{ 
+          position: 'absolute', 
+          left: 11, 
+          top: '50%', 
+          transform: 'translateY(-50%)', 
+          pointerEvents: 'none', 
+          color: 'var(--text3)', 
+          display: 'flex',
+          alignItems: 'center' 
+          }}>
+          {searchLoading ? (
+            <Spinner size={13} />
+          ) : (
+            <Search size={16} />
+          )}
         </span>
         <input
           style={{ width: '100%', background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '8px 70px 8px 34px', color: 'var(--text)', fontFamily: 'inherit', fontSize: 14, outline: 'none', transition: 'border .15s' }}

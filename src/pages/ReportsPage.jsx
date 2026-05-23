@@ -3,6 +3,21 @@ import { useToast } from '../context/ToastContext';
 import { reportService, vehicleService } from '../services';
 import { Spinner } from '../components/ui/Skeleton';
 
+import {
+  Zap,
+  CarFront,
+  ClipboardList,
+  Shield,
+  Activity,
+  Clock3,
+  Plus,
+  Sparkles,
+  Search,
+  ArrowRight,
+  Scale,     
+  FileText
+} from 'lucide-react';
+
 const DEFAULT_PARAMS = { ENGINE: true, PERFORMANCE: true, PRICE: true, SAFETY: false };
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
 
@@ -24,7 +39,9 @@ function VehicleSearchInput({ label, value, onSelect }) {
       <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
         <input className="form-input" placeholder={`Buscar ${label}...`} value={query}
           onChange={(e) => setQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && search()} />
-        <button className="btn btn-outline btn-sm" onClick={search}>🔍</button>
+        <button className="btn btn-outline btn-sm" onClick={search}>
+          <Search size={16} /> 
+        </button>
       </div>
       {results.length > 0 && (
         <div style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius)', overflow: 'hidden', marginBottom: 6 }}>
@@ -99,13 +116,23 @@ export function ReportsPage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">📋 Relatórios</div>
+      <div className="page-title">Relatórios</div>
       <div className="page-sub">Gere relatórios PDF detalhados com análise de IA</div>
 
       <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
         {[
-          { id: 'comparison', icon: '⚖', title: 'Comparison Report', desc: 'Comparação técnica completa em PDF' },
-          { id: 'dossier', icon: '📄', title: 'Vehicle Dossier', desc: 'Dossier completo de um único veículo' },
+          { 
+            id: 'comparison', 
+            icon: <Scale size={20} strokeWidth={1.5} />, 
+            title: 'Comparison Report', 
+            desc: 'Comparação técnica completa em PDF' 
+          },
+          { 
+            id: 'dossier', 
+            icon: <FileText size={20} strokeWidth={1.5} />, 
+            title: 'Vehicle Dossier', 
+            desc: 'Dossier completo de um único veículo' 
+          },
         ].map((r) => (
           <div key={r.id} className={`report-card ${tab === r.id ? 'selected' : ''}`} style={{ flex: 1 }}
             onClick={() => { setTab(r.id); setReportMeta(null); }}>
@@ -121,7 +148,9 @@ export function ReportsPage() {
           {tab === 'comparison' ? (
             <div className="card">
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                <div className="report-icon" style={{ margin: 0 }}>⚖</div>
+                <div className="report-icon" style={{ margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Scale size={20} strokeWidth={1.5} />
+                </div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 15 }}>Comprehensive Comparison Report</div>
                   <div style={{ fontSize: 13, color: 'var(--text3)' }}>Comparação técnica completa em PDF</div>
@@ -145,13 +174,15 @@ export function ReportsPage() {
 
               <button className="btn btn-primary btn-lg" style={{ width: '100%', justifyContent: 'center' }}
                 onClick={generateComparison} disabled={generating || !vehicleA || !vehicleB}>
-                {generating ? <><Spinner size={16} /> Gerando PDF...</> : '📋 Gerar Relatório'}
+                {generating ? <><Spinner size={16} /> Gerando PDF...</> :<><ClipboardList size={16}/> Gerar Relatório</>}
               </button>
             </div>
           ) : (
             <div className="card">
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-                <div className="report-icon" style={{ margin: 0 }}>📄</div>
+                <div className="report-icon" style={{ margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <FileText size={20} strokeWidth={1.5} />
+                </div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 15 }}>Vehicle History Dossier</div>
                   <div style={{ fontSize: 13, color: 'var(--text3)' }}>Dossier completo de um único veículo</div>
@@ -162,7 +193,7 @@ export function ReportsPage() {
 
               <button className="btn btn-primary btn-lg" style={{ width: '100%', justifyContent: 'center' }}
                 onClick={generateDossier} disabled={generating || !dossierVehicle}>
-                {generating ? <><Spinner size={16} /> Gerando PDF...</> : '📋 Gerar Dossier'}
+                {generating ? <><Spinner size={16} /> Gerando PDF...</> : <><ClipboardList size={16}/> Gerar Dossier</>}
               </button>
             </div>
           )}
@@ -221,7 +252,7 @@ export function ReportsPage() {
             </div>
           ) : (
             <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: 340, border: '2px dashed var(--border)', gap: 12 }}>
-              <div style={{ width: 64, height: 64, background: 'var(--bg3)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, opacity: .4 }}>📋</div>
+              <div style={{ width: 64, height: 64, background: 'var(--bg3)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, opacity: .4 }}><ClipboardList size={42} strokeWidth={1.5} color="var(--text3)" /></div>
               <div style={{ fontWeight: 700, fontSize: 15, color: 'var(--text2)' }}>Preview do Relatório</div>
               <div style={{ fontSize: 13, color: 'var(--text3)', textAlign: 'center', maxWidth: 240, lineHeight: 1.6 }}>
                 Configure os parâmetros ao lado e clique em "Gerar Relatório"

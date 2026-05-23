@@ -20,16 +20,26 @@ import {
 } from 'lucide-react';
 
 export function HomePage() {
-  const user = { name: "Bruno Silva", role: "ADMIN", email: "bruno@email.com" }; 
+  const { user } = useAuth();
   const navigate = useNavigate();
-  
-  // Mude para esses valores iniciais falsos:
-  const [garage, setGarage] = useState([
-    { id: 1, active: true, nickname: "Meu Mach 1", vehicleSpec: { brand: "Ford", model: "Mustang Mach 1", year: 2023, horsepower: 483, engine: "5.0 V8" }, fleetType: "PERSONAL" }
-  ]);
-  const [history, setHistory] = useState({ content: [], totalElements: 1 });
-  const [insights, setInsights] = useState({ mostPowerful: "Mustang Mach 1" });
-  const [loading, setLoading] = useState(false);
+  const [garage, setGarage] = useState([]);
+  const [history, setHistory] = useState({ content: [], totalElements: 0 });
+  const [insights, setInsights] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+  Promise.all([
+  garageService.list().catch(() => []),
+  historyService.list(0, 5).catch(() => ({ content: [], totalElements: 0 })),
+  garageService.insights().catch(() => null),
+  ]).then(([g, h, i]) => {
+  setGarage(Array.isArray(g) ? g : []);
+  setHistory(h || { content: [], totalElements: 0 });
+  setInsights(i);
+  }).finally(() => setLoading(false));
+
+  }, []);
 
   const activeVehicles = garage.filter((v) => v.active);
   const recentHistory = history?.content || [];
@@ -93,17 +103,13 @@ export function HomePage() {
           }}>
             YOUR ESSENTIAL AUTOMOTIVE <br></br>INTELLIGENCE PLATFORM
           </div>
-
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: '30px' }}>
-            <button className="btn btn-outline" style={{ borderColor: '#9ca3af', color: '#1c1c1e' }} onClick={() => navigate('/compare')}>Comparar</button>
-          </div>
         </div>
       </div>
 
       <div className="grid-4" style={{ marginBottom: 20 }}>
         {[
           { label: 'Garage', value: garage.length, sub: 'Veículos cadastrados', color: 'var(--text)', path: '/garage' },
-          { label: 'Frota Ativa', value: activeVehicles.length, sub: insights?.mostPowerful ? `+ Potente: ${insights.mostPowerful}` : 'Veículos ativos', color: 'var(--green)', path: '/garage' },
+          { label: 'Frota Ativa', value: activeVehicles.length, sub: insights?.mostPowerful ? `+ Potente: ${insights.mostPowerful}` : 'Veículos ativos', color: 'var(--text)', path: '/garage' },
           { label: 'Histórico', value: history?.totalElements || 0, sub: 'Ações registradas', color: 'var(--text)', path: '/history' },
         ].map((s) => (
           <div key={s.label} className="stat-card" style={{ cursor: 'pointer', transition: 'border-color .15s' }}
@@ -138,8 +144,7 @@ export function HomePage() {
               </div>
             ) : activeVehicles.slice(0, 5).map((v) => (
               <div key={v.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
-                <div style={{ width: 38, height: 38, background: 'var(--bg3)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>🚘</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ width: 38,height: 38,background: 'var(--bg3)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text)', flexShrink: 0 }}><CarFront size={20} strokeWidth={1.5} /></div>                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {v.nickname || `${v.vehicleSpec.brand} ${v.vehicleSpec.model}`}
                   </div>
@@ -161,7 +166,28 @@ export function HomePage() {
               <div style={{ textAlign: 'center', padding: '28px 0' }}>
                 <div style={{ fontSize: 36, opacity: .2, marginBottom: 10 }}><ClipboardList size={42}/></div>
                 <div style={{ color: 'var(--text3)', fontSize: 14, marginBottom: 14 }}>Nenhuma ação registrada</div>
-                <button className="btn btn-primary btn-sm" onClick={() => navigate('/analyze')}>Iniciar análise</button>
+                <button 
+                  onClick={() => navigate('/analyze')}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: 'var(--radius)',
+                    border: '1px solid #ffffff',
+                    background: 'transparent',   
+                    color: '#fff',            
+                    fontWeight: '600',
+                    fontSize: '13px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#0000006b'; 
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'transparent';
+                  }}     
+                  >
+                  Iniciar análise
+                </button>
               </div>
             ) : recentHistory.map((h) => (
               <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
@@ -169,7 +195,8 @@ export function HomePage() {
                   width: 36, height: 36, borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0,
                   background: h.actionType === 'ANALYSIS' ? 'rgba(59,130,246,.1)' : h.actionType === 'COMPARISON' ? 'rgba(232,98,42,.1)' : 'rgba(34,201,122,.1)',
                 }}>
-                  {h.actionType === 'ANALYSIS' ? '📊' : h.actionType === 'COMPARISON' ? '⚖' : '🔧'}
+                  {h.actionType === 'ANALYSIS' ? (<BarChart size={18} />
+                  ) : h.actionType === 'COMPARISON' ? (<Scale size={18} />) : (<Wrench size={18} />)}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{h.title}</div>
@@ -198,7 +225,29 @@ export function HomePage() {
               <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Comparação rápida</div>
               <div style={{ fontSize: 12, color: 'var(--text3)' }}>Compare dois veículos com análise de IA</div>
             </div>
-            <button className="btn btn-primary btn-sm" onClick={() => navigate('/compare')}>Comparar</button>
+            <button 
+              onClick={() => navigate('/compare')}
+              style={{
+                padding: '8px 16px',
+                borderRadius: 'var(--radius)',
+                border: '1px solid #ffffff',
+                background: 'transparent',   
+                color: '#fff',            
+                fontWeight: '600',
+                fontSize: '13px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#0000006b'; 
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'transparent';
+              }}     
+            >
+              Comparar
+            </button>
           </div>
         </div>
       </div>

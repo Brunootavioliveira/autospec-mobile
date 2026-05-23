@@ -41,21 +41,21 @@ export function AnalyzePage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">📊 Análise de Veículo</div>
+      <div className="page-title">Análise de Veículo</div>
       <div className="page-sub">Power-to-weight, track handling score e percentis populacionais via IA</div>
 
       <div className="card" style={{ marginBottom: 20 }}>
-        <div className="section-title" style={{ marginBottom: 14 }}>🔍 Selecionar Veículo</div>
+        <div className="section-title" style={{ marginBottom: 14 }}>Selecionar Veículo</div>
         <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
           <input className="form-input" placeholder="Buscar por marca, modelo, versão..." value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && search()} style={{ flex: 1 }} />
           <button className="btn btn-outline" onClick={search} disabled={searching}>
-            {searching ? <Spinner size={14} /> : '🔍 Buscar'}
+            {searching ? <Spinner size={14} /> : 'Buscar'}
           </button>
           <input className="form-input" placeholder="ID" type="number" value={vehicleId}
             onChange={(e) => setVehicleId(e.target.value)} style={{ width: 90 }} />
           <button className="btn btn-primary" onClick={() => vehicleId && analyze(vehicleId)} disabled={loading || !vehicleId}>
-            {loading ? <><Spinner size={14} /> Analisando...</> : '⚡ Analisar'}
+            {loading ? <><Spinner size={14} /> Analisando...</> : 'Analisar'}
           </button>
         </div>
         {searchResults.length > 0 && (
