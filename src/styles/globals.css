@@ -107,7 +107,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Barlow
 
 /* ===================== BADGES ===================== */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600}
-.badge-orange{background:rgba(255,255,255,.5);color:var(--orange);border:1px solid rgba(232,98,42,.3)}
+.badge-orange{background:rgba(255, 255, 255, 0.5);color:var(--orange);border:1px solid rgba(232,98,42,.3)}
 .badge-green{background:rgba(34,201,122,.1);color:var(--green);border:1px solid rgba(34,201,122,.2)}
 .badge-red{background:rgba(232,64,64,.1);color:var(--red);border:1px solid rgba(232,64,64,.2)}
 .badge-blue{background:rgba(255,255,255,.5);color:var(--blue);border:var(--blue)}
