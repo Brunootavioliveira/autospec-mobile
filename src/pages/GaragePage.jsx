@@ -196,8 +196,8 @@ export function GaragePage() {
             <div className="form-group" style={{ margin: 0 }}>
               <label className="form-label">Tipo de Frota</label>
               <select className="form-select" value={addForm.fleetType} onChange={(e) => setAddForm((f) => ({ ...f, fleetType: e.target.value }))}>
-                <option value="PERSONAL">👤 Pessoal</option>
-                <option value="WORK">💼 Trabalho</option>
+                <option value="PERSONAL">Pessoal</option>
+                <option value="WORK">Trabalho</option>
               </select>
             </div>
             <div className="form-group" style={{ margin: 0 }}>
@@ -238,7 +238,7 @@ export function GaragePage() {
           <div className="modal-actions">
             <button className="btn btn-outline" onClick={() => setShowEditModal(false)}>Cancelar</button>
             <button className="btn btn-primary" onClick={saveEdit} disabled={editLoading}>
-              {editLoading ? <><Spinner size={14} /> Salvando...</> : '💾 Salvar'}
+              {editLoading ? <><Spinner size={14} /> Salvando...</> : 'Salvar'}
             </button>
           </div>
         </Modal>

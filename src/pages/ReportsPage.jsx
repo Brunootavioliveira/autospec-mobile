@@ -56,7 +56,6 @@ function VehicleSearchInput({ label, value, onSelect }) {
           ))}
         </div>
       )}
-      {/* TROCADO: var(--orange) alterado para var(--blue) */}
       {value && <div style={{ fontSize: 12, color: 'var(--blue)', fontWeight: 600 }}>✓ {value.brand} {value.model} {value.year} (ID:{value.id})</div>}
     </div>
   );
@@ -238,7 +237,6 @@ export function ReportsPage() {
                 ))}
               </div>
 
-              {/* TROCADO: Background alterado de var(--orange-dim) para var(--blue-dim), borda e texto para var(--blue) */}
               <div style={{ padding: '10px 14px', background: 'var(--blue-dim)', borderRadius: 'var(--radius)', border: '1px solid rgba(0,52,120,.2)', marginBottom: 12 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--blue)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: '.4px' }}>URL de Download</div>
                 <div style={{ fontSize: 11, fontFamily: 'monospace', color: 'var(--text2)', wordBreak: 'break-all', lineHeight: 1.5 }}>http://localhost:8081{reportMeta.downloadUrl}</div>
