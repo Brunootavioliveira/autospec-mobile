@@ -13,12 +13,19 @@ import {
   Plus,
   Sparkles,
   Search,
-  ArrowRight
+  ArrowRight,
+  Scale,
+  Wrench
 } from 'lucide-react';
 
 const TYPE_COLOR = { ANALYSIS: 'var(--blue)', COMPARISON: 'var(--orange)', SERVICE_RECORD: 'var(--green)' };
 const TYPE_BG    = { ANALYSIS: 'rgba(59,130,246,.1)', COMPARISON: 'rgba(232,98,42,.1)', SERVICE_RECORD: 'rgba(34,201,122,.1)' };
 const TYPE_LABEL = { ANALYSIS: 'Análise', COMPARISON: 'Comparação', SERVICE_RECORD: 'Service' };
+const TYPE_ICON  = { 
+  ANALYSIS: <Activity size={18} strokeWidth={1.5} />, 
+  COMPARISON: <Scale size={18} strokeWidth={1.5} />, 
+  SERVICE_RECORD: <Wrench size={18} strokeWidth={1.5} /> 
+};
 
 function relativeTime(dateStr) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -100,7 +107,7 @@ export function HistoryPage() {
           { type: 'ANALYSIS', label: 'Análises'},
           { type: 'COMPARISON', label: 'Comparações'},
           { type: 'SERVICE_RECORD', label: 'Service Records'},
-        ].map(({ type, label, icon }) => (
+        ].map(({ type, label }) => (
           <div key={type}
             onClick={() => setFilter((f) => f === type ? 'ALL' : type)}
             style={{
@@ -109,7 +116,9 @@ export function HistoryPage() {
               borderRadius: 'var(--radius-lg)', padding: '14px 16px', cursor: 'pointer',
               transition: 'border-color .15s', userSelect: 'none',
             }}>
-            <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6 }}>{icon} {label}</div>
+            <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+              {TYPE_ICON[type]} {label}
+            </div>
             <div style={{ fontSize: 24, fontWeight: 900, fontFamily: 'Barlow Condensed', color: filter === type ? TYPE_COLOR[type] : 'var(--text)' }}>
               {loading ? '—' : stats[type]}
             </div>
@@ -127,7 +136,6 @@ export function HistoryPage() {
         </div>
       </div>
 
-     
       <div className="table-wrap">
         <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 600 }}>
@@ -144,45 +152,27 @@ export function HistoryPage() {
           </div>
         ) : history.length === 0 ? (
           <div className="empty">
-            <div className="empty-icon">
-              <ClipboardList size={42} strokeWidth={1.5} />
-            </div>
+            <div className="empty-icon"><ClipboardList size={42} strokeWidth={1.5} /></div>
             <div className="empty-title">Nenhum registro encontrado</div>
-            <div className="empty-sub">
-              {filter !== 'ALL' ? `Nenhum registro do tipo "${TYPE_LABEL[filter]}"` : 'Seu histórico de ações aparecerá aqui'}
-            </div>
           </div>
         ) : (
           <>
             {history.map((h) => (
-              <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 16px', borderBottom: '1px solid var(--border)', transition: 'background .1s' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+              <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 16px', borderBottom: '1px solid var(--border)' }}>
                 <div style={{ width: 40, height: 40, borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0, background: TYPE_BG[h.actionType] || 'var(--bg3)' }}>
-                  <ClipboardList size={18} strokeWidth={1.5} />
+                  {TYPE_ICON[h.actionType] || <ClipboardList size={18} />}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{h.title}</div>
-                  <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{h.description}</div>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{h.title}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text3)' }}>{h.description}</div>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
                   <div style={{ fontSize: 12, color: 'var(--text3)' }}>{relativeTime(h.createdAt)}</div>
-                  <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginTop: 2, color: TYPE_COLOR[h.actionType] || 'var(--text3)' }}>
-                    {TYPE_LABEL[h.actionType] || h.actionType}
-                  </div>
+                  <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', color: TYPE_COLOR[h.actionType] }}>{TYPE_LABEL[h.actionType]}</div>
                 </div>
-                <button className="btn btn-ghost btn-sm" style={{ color: 'var(--red)', opacity: .6, padding: '4px 8px' }}
-                  onClick={() => deleteEntry(h.id)} title="Remover">✕</button>
+                <button className="btn btn-ghost btn-sm" onClick={() => deleteEntry(h.id)}>✕</button>
               </div>
             ))}
-
-            {history.length < total && (
-              <div style={{ padding: '14px 16px', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
-                <button className="btn btn-outline btn-sm" onClick={loadMore} disabled={loading}>
-                  {loading ? 'Carregando...' : `Carregar mais (${total - history.length} restantes)`}
-                </button>
-              </div>
-            )}
           </>
         )}
       </div>
