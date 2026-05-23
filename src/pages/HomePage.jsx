@@ -16,7 +16,10 @@ import {
   Plus,
   Sparkles,
   Search,
-  ArrowRight
+  ArrowRight,
+  BarChart, 
+  Wrench,   
+  Scale
 } from 'lucide-react';
 
 export function HomePage() {
