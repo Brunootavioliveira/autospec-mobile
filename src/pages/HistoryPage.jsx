@@ -159,7 +159,7 @@ export function HistoryPage() {
                 onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg3)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
                 <div style={{ width: 40, height: 40, borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0, background: TYPE_BG[h.actionType] || 'var(--bg3)' }}>
-                  {TYPE_ICON[h.actionType] || '📌'}
+                  <ClipboardList size={18} strokeWidth={1.5} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{h.title}</div>
