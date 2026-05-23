@@ -438,6 +438,16 @@ A documentação completa está disponível via Swagger em `/swagger-ui.html`.
 
 Desenvolvido como projeto acadêmico para o **Projeto FORD** — Engenharia de Software.
 
+Bruno Otavio Silva De Oliveira RM556196
+
+Guilherme Flores Pereira de Almeida RM554948
+
+Luiz Fernando de Aragão Souza RM555561
+
+Marcello de Freitas Moreira RM557531
+
+Leonardo Gonçalves Novaes RM554807
+
 ---
 
 *AutoSpec Intelligence Platform — Especificações técnicas com IA*
