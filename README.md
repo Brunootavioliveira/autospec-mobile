@@ -8,17 +8,6 @@
 
 ---
 
-> ⚠️ **Nota sobre o certificado SSL**  
-> O backend está hospedado em uma instância AWS EC2 com certificado autoassinado.  
-> Na primeira vez que acessar o frontend, abra o link abaixo no browser e clique em  
-> **"Avançado" → "Aceitar o risco e continuar"** para que as requisições funcionem:  
-> 🔗 [https://18.216.83.72:8443](https://18.216.83.72:8443)  
-> Isso é necessário porque o certificado não foi emitido por uma CA pública.  
-> Em produção real, seria substituído por um certificado Let's Encrypt.  
-> Depois acesse o frontend: [autospec-mobile.vercel.app](https://autospec-mobile.vercel.app) 
-
----
-
 ## Índice
 
 - [Sobre o Projeto](#sobre-o-projeto)
