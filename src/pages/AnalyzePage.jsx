@@ -82,8 +82,10 @@ export function AnalyzePage() {
         <div className="fade-in">
           <div className="card" style={{ marginBottom: 16 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-              <div style={{ width: 60, height: 60, background: 'var(--orange-dim)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(232,98,42,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, flexShrink: 0 }}>🚘</div>
-              <div style={{ flex: 1 }}>
+              <div style={{ width: 60, height: 60, background: 'var(--blue-dim)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(0,52,120,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <CarFront size={28} color="var(--blue)" />
+              </div>              
+                <div style={{ flex: 1 }}>
                 <div style={{ fontFamily: 'Barlow Condensed', fontSize: 26, fontWeight: 900, letterSpacing: '-.5px' }}>{v.brand} {v.model}</div>
                 <div style={{ color: 'var(--text3)', fontSize: 13 }}>{v.year} · {v.version}</div>
                 <div style={{ fontSize: 13, color: 'var(--text2)', marginTop: 2 }}>{v.engine} · {v.horsepower}HP · {v.drivetrain}</div>
@@ -135,7 +137,7 @@ export function AnalyzePage() {
           </div>
 
           <div className="card">
-            <div className="section-title" style={{ marginBottom: 16 }}>🔧 Especificações Completas</div>
+            <div className="section-title" style={{ marginBottom: 16 }}>Especificações Completas</div>
             <div className="grid-2">
               {[
                 ['Motor', v.engine], ['Potência', `${v.horsepower} HP`],
