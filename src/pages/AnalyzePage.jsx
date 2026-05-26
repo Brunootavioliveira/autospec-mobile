@@ -118,7 +118,7 @@ export function AnalyzePage() {
                 <RadarChart data={{ ...v, trackHandlingScore: result.trackHandlingScore }} />
               </div>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 14 }}>📈 Percentis vs. Frota Global</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 14 }}>Percentis vs. Frota Global</div>
                 {percentiles.map((p) => (
                   <div key={p.label} style={{ marginBottom: 14 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5, fontSize: 13 }}>
