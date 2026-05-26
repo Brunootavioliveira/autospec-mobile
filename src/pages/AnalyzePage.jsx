@@ -3,6 +3,7 @@ import { useToast } from '../context/ToastContext';
 import { analysisService, vehicleService } from '../services';
 import { RadarChart } from '../components/ui/RadarChart';
 import { Sk, Spinner } from '../components/ui/Skeleton';
+import { CarFront, ClipboardList, BarChart, Wrench, Scale } from 'lucide-react';
 
 export function AnalyzePage() {
   const toast = useToast();
