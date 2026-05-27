@@ -69,7 +69,7 @@ export function Topbar({ onMenuClick }) {
 
   return (
     <div className="topbar">
-      <button className="hamburger" onClick={onMenuClick} aria-label="Abrir menu">
+      <button className="hamburger" onClick={onMenuClick} aria-label="Open menu">
         <Menu size={22} />
       </button>
 
@@ -79,7 +79,7 @@ export function Topbar({ onMenuClick }) {
         </span>
         <input
           style={{ width: '100%', background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '8px 60px 8px 34px', color: 'var(--text)', fontFamily: 'inherit', fontSize: 14, outline: 'none', transition: 'border .15s' }}
-          placeholder="Buscar veículos..."
+          placeholder="Search vehicles..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => searchResults.length > 0 && setSearchOpen(true)}
@@ -91,14 +91,14 @@ export function Topbar({ onMenuClick }) {
         {searchOpen && searchResults.length > 0 && (
           <div className="search-dropdown">
             <div style={{ padding: '7px 14px 5px', fontSize: 11, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.5px', borderBottom: '1px solid var(--border)' }}>
-              Veículos encontrados
+              Vehicles Found
             </div>
             {searchResults.map((v) => (
               <div key={v.id} className="search-result-item" onClick={() => goTo('/vehicles')}>
                 <div style={{ width: 32, height: 32, background: 'var(--bg3)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <CarFront size={16} color="var(--text2)" /> 
                 </div>                
-                  <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.brand} {v.model} {v.version}</div>
                   <div style={{ fontSize: 11, color: 'var(--text3)' }}>{v.year} · {v.horsepower}HP</div>
                 </div>
@@ -107,7 +107,7 @@ export function Topbar({ onMenuClick }) {
             ))}
             <div style={{ padding: '8px 14px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8 }}>
               <button className="btn btn-primary btn-sm" style={{ flex: 1, justifyContent: 'center' }} onClick={() => goTo('/vehicles')}>
-                Ver todos →
+                View all →
               </button>
               <button className="btn btn-ghost btn-sm" onClick={() => setSearchOpen(false)}>✕</button>
             </div>
@@ -116,7 +116,7 @@ export function Topbar({ onMenuClick }) {
       </div>
 
       <div className="user-area">
-        <div className="user-avatar" onClick={() => goTo('/settings')} title="Configurações">
+        <div className="user-avatar" onClick={() => goTo('/settings')} title="Settings">
           {initials}
         </div>
         <div style={{ cursor: 'pointer' }} onClick={() => goTo('/settings')}>

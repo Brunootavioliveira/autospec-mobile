@@ -16,18 +16,18 @@ import {
 } from 'lucide-react';
 
 const MAIN_NAV = [
-  { id: '/',         label: 'Home',       icon: House },
-  { id: '/vehicles', label: 'Veículos',   icon: Search },
-  { id: '/generate', label: 'Gerar Spec', icon: Sparkles },
-  { id: '/compare',  label: 'Comparar',   icon: GitCompareArrows },
-  { id: '/analyze',  label: 'Analisar',   icon: ChartColumn },
-  { id: '/garage',   label: 'Garage',     icon: CarFront },
-  { id: '/history',  label: 'Histórico',  icon: History },
-  { id: '/reports',  label: 'Relatórios', icon: FileText },
+  { id: '/',         label: 'Home',           icon: House },
+  { id: '/vehicles', label: 'Vehicles',       icon: Search },
+  { id: '/generate', label: 'Generate Spec',   icon: Sparkles },
+  { id: '/compare',  label: 'Compare',        icon: GitCompareArrows },
+  { id: '/analyze',  label: 'Analyze',        icon: ChartColumn },
+  { id: '/garage',   label: 'Garage',         icon: CarFront },
+  { id: '/history',  label: 'History',        icon: History },
+  { id: '/reports',  label: 'Reports',        icon: FileText },
 ];
 
-const BOTTOM_NAV = [{ id: '/settings', label: 'Configurações', icon: Settings }];
-const ADMIN_NAV  = [{ id: '/admin',    label: 'Usuários',       icon: Users }];
+const BOTTOM_NAV = [{ id: '/settings', label: 'Settings', icon: Settings }];
+const ADMIN_NAV  = [{ id: '/admin',    label: 'Users',    icon: Users }];
 
 export function Sidebar({ open, onClose }) {
   const { user, logout } = useAuth();
@@ -56,7 +56,7 @@ export function Sidebar({ open, onClose }) {
           onClick={onClose}
           style={{ border: 'none', background: 'transparent', color: 'var(--text3)', cursor: 'pointer', padding: 4, borderRadius: 6, display: 'flex', alignItems: 'center' }}
           className="sidebar-close-btn"
-          aria-label="Fechar menu"
+          aria-label="Close menu"
         >
           <X size={18} />
         </button>
@@ -143,7 +143,7 @@ export function Sidebar({ open, onClose }) {
           style={{ width: '100%', justifyContent: 'center', marginTop: 2, color: 'var(--red)', opacity: .8 }}
           onClick={logout}
         >
-          <LogOut size={16} /> Sair
+          <LogOut size={16} /> Sign out
         </button>
       </div>
     </div>
