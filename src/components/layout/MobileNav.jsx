@@ -3,10 +3,10 @@ import { House, Search, GitCompareArrows, CarFront, Menu } from 'lucide-react';
 
 const NAV = [
   { id: '/',         label: 'Home',     icon: House },
-  { id: '/vehicles', label: 'Buscar',   icon: Search },
-  { id: '/compare',  label: 'Comparar', icon: GitCompareArrows },
+  { id: '/vehicles', label: 'Search',   icon: Search },
+  { id: '/compare',  label: 'Compare',  icon: GitCompareArrows },
   { id: '/garage',   label: 'Garage',   icon: CarFront },
-  { id: '/settings', label: 'Mais',     icon: Menu },
+  { id: '/settings', label: 'More',     icon: Menu },
 ];
 
 export function MobileNav() {

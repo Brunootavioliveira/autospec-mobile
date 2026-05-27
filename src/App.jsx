@@ -36,7 +36,6 @@ export default function App() {
               </Route>
             </Route>
 
-            {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AuthProvider>

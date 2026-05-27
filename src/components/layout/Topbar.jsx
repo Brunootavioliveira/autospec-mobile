@@ -69,12 +69,10 @@ export function Topbar({ onMenuClick }) {
 
   return (
     <div className="topbar">
-      {/* Hamburger — shown only on mobile via CSS */}
       <button className="hamburger" onClick={onMenuClick} aria-label="Abrir menu">
         <Menu size={22} />
       </button>
 
-      {/* Search */}
       <div ref={searchRef} style={{ position: 'relative', flex: 1, maxWidth: 520 }}>
         <span style={{ position: 'absolute', left: 11, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text3)', display: 'flex', alignItems: 'center' }}>
           {searchLoading ? <Spinner size={13} /> : <Search size={16} />}
@@ -97,8 +95,10 @@ export function Topbar({ onMenuClick }) {
             </div>
             {searchResults.map((v) => (
               <div key={v.id} className="search-result-item" onClick={() => goTo('/vehicles')}>
-                <div style={{ width: 32, height: 32, background: 'var(--bg3)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>🚘</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ width: 32, height: 32, background: 'var(--bg3)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <CarFront size={16} color="var(--text2)" /> 
+                </div>                
+                  <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{v.brand} {v.model} {v.version}</div>
                   <div style={{ fontSize: 11, color: 'var(--text3)' }}>{v.year} · {v.horsepower}HP</div>
                 </div>
@@ -115,7 +115,6 @@ export function Topbar({ onMenuClick }) {
         )}
       </div>
 
-      {/* User area */}
       <div className="user-area">
         <div className="user-avatar" onClick={() => goTo('/settings')} title="Configurações">
           {initials}

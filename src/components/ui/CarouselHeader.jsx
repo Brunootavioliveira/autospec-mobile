@@ -16,31 +16,31 @@ export function CarouselHeader() {
   const userNameUpperCase = user?.name ? ` ${user.name.toUpperCase()}` : '';
 
   const SLIDES = [
-  {
-    id: 1,
-    title: `WELCOME TO AUTOSPEC,\n${userNameUpperCase}`,
-    sub: 'YOUR ESSENTIAL AUTOMOTIVE\nINTELLIGENCE PLATFORM',
-    imgSrc: mustangBanner,
-  },
-  {
-    id: 2,
-    title: 'ADVANCED VEHICLE\n INTELLIGENCE',
-    sub: 'ANÁLISE TÉCNICA COMPLETA\n COM IA.',
-    imgSrc: mustangBanner,
-  },
-  {
-    id: 3,
-    title: 'COMPARE QUALQUER\n VEÍCULO',
-    sub: 'SIDE-BY-SIDE COM SCORE\nGERADO POR IA',
-    imgSrc: mustangBanner,
-  },
-  {
-    id: 4,
-    title: 'POWER-TO-WEIGHT\n& TRACK SCORE',
-    sub: 'PERCENTIS POPULACIONAIS\nE RADAR DE PERFORMANCE',
-    imgSrc: mustangBanner,
-  },
-];
+    {
+      id: 1,
+      title: `WELCOME TO AUTOSPEC,\n${userNameUpperCase}`,
+      sub: 'YOUR ESSENTIAL AUTOMOTIVE\nINTELLIGENCE PLATFORM',
+      imgSrc: mustangBanner,
+    },
+    {
+      id: 2,
+      title: 'ADVANCED VEHICLE\n INTELLIGENCE',
+      sub: 'COMPLETE TECHNICAL ANALYSIS\n POWERED BY AI.',
+      imgSrc: mustangBanner,
+    },
+    {
+      id: 3,
+      title: 'COMPARE ANY\n VEHICLE',
+      sub: 'SIDE-BY-SIDE WITH AI-GENERATED\nPERFORMANCE SCORES',
+      imgSrc: mustangBanner,
+    },
+    {
+      id: 4,
+      title: 'POWER-TO-WEIGHT\n& TRACK SCORE',
+      sub: 'POPULATION PERCENTILES\nAND PERFORMANCE RADAR',
+      imgSrc: mustangBanner,
+    },
+  ];
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % SLIDES.length), [SLIDES.length]);
   const prev = useCallback(() => setCurrent((c) => (c - 1 + SLIDES.length) % SLIDES.length), [SLIDES.length]);
@@ -76,7 +76,6 @@ export function CarouselHeader() {
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
         {SLIDES.map((s, i) => {
-          const accent = s.accent || 'var(--orange)';
           return (
             <div key={s.id} className="carousel-slide" aria-hidden={i !== current}>
               <img src={s.imgSrc} alt="" className="carousel-slide-img" />
@@ -129,10 +128,10 @@ export function CarouselHeader() {
       </div>
 
       <div className="carousel-arrows">
-        <button className="carousel-arrow" onClick={prev} aria-label="Anterior">
+        <button className="carousel-arrow" onClick={prev} aria-label="Previous">
           <ChevronLeft size={16} />
         </button>
-        <button className="carousel-arrow" onClick={next} aria-label="Próximo">
+        <button className="carousel-arrow" onClick={next} aria-label="Next">
           <ChevronRight size={16} />
         </button>
       </div>

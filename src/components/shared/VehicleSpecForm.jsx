@@ -40,13 +40,13 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
 
   const generate = async () => {
     if (!form.brand || !form.model || !form.version || !form.year) {
-      toast('Preencha todos os campos', 'error'); return;
+      toast('Please fill out all fields', 'error'); return;
     }
     setGenerating(true);
     try {
       const data = await vehicleService.generate(form);
       onSelect(data);
-      toast('Spec gerada com IA! ✓', 'success');
+      toast('Spec generated with AI! ✓', 'success');
     } catch (e) { toast(e.message, 'error'); }
     finally { setGenerating(false); }
   };
@@ -59,7 +59,7 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
       <div style={{ fontWeight: 700, fontSize: 15 }}>{selected.brand} {selected.model}</div>
       <div style={{ fontSize: 13, color: 'var(--orange)' }}>{selected.year} · {selected.version}</div>
       <div style={{ fontSize: 12, color: 'var(--text3)' }}>{selected.horsepower}HP · {selected.engine}</div>
-      <button className="btn btn-ghost btn-sm" style={{ marginTop: 4 }} onClick={onClear}>Trocar veículo ↺</button>
+      <button className="btn btn-ghost btn-sm" style={{ marginTop: 4 }} onClick={onClear}>Change vehicle ↺</button>
     </div>
   );
 
@@ -67,22 +67,22 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
     <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: 16 }}>
       <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text2)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.4px' }}>{label}</div>
       <div className="tabs" style={{ marginBottom: 14 }}>
-      <button 
-                className={`tab ${mode === 'search' ? 'active' : ''}`} 
-                onClick={() => setMode('search')}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
-              >
-                <Search size={14} /> Buscar existente
+        <button 
+          className={`tab ${mode === 'search' ? 'active' : ''}`} 
+          onClick={() => setMode('search')}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}
+        >
+          <Search size={14} /> Search Existing
         </button>        
-        <button className={`tab ${mode === 'generate' ? 'active' : ''}`} onClick={() => setMode('generate')}>Gerar com IA</button>
+        <button className={`tab ${mode === 'generate' ? 'active' : ''}`} onClick={() => setMode('generate')}>Generate with AI</button>
       </div>
       {mode === 'search' ? (
         <>
           <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-            <input className="form-input" placeholder="Buscar por marca, modelo..." value={searchQuery}
+            <input className="form-input" placeholder="Search by brand, model..." value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && search()} />
             <button className="btn btn-primary btn-sm" onClick={search} disabled={searching}>
-              {searching ? <Spinner size={14} /> : 'Buscar'}
+              {searching ? <Spinner size={14} /> : 'Search'}
             </button>
           </div>
           {searchResults.length > 0 && (
@@ -101,7 +101,7 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
           )}
           {searchResults.length === 0 && searchQuery && !searching && (
             <div style={{ fontSize: 13, color: 'var(--text3)', textAlign: 'center', padding: '12px 0' }}>
-              Nenhum resultado. Tente gerar com IA.
+              No results found. Try generating with AI.
             </div>
           )}
         </>
@@ -109,26 +109,26 @@ export function VehicleSpecForm({ label, onSelect, selected, onClear }) {
         <>
           <div className="grid-2" style={{ gap: 8, marginBottom: 8 }}>
             <div>
-              <label className="form-label">Marca</label>
+              <label className="form-label">Brand</label>
               <input className="form-input" placeholder="Toyota" value={form.brand} onChange={(e) => setForm((f) => ({ ...f, brand: e.target.value }))} />
             </div>
             <div>
-              <label className="form-label">Modelo</label>
+              <label className="form-label">Model</label>
               <input className="form-input" placeholder="Corolla" value={form.model} onChange={(e) => setForm((f) => ({ ...f, model: e.target.value }))} />
             </div>
           </div>
           <div className="grid-2" style={{ gap: 8, marginBottom: 12 }}>
             <div>
-              <label className="form-label">Versão</label>
+              <label className="form-label">Version</label>
               <input className="form-input" placeholder="XEi" value={form.version} onChange={(e) => setForm((f) => ({ ...f, version: e.target.value }))} />
             </div>
             <div>
-              <label className="form-label">Ano</label>
+              <label className="form-label">Year</label>
               <input className="form-input" type="number" min="1900" max="2030" value={form.year} onChange={(e) => setForm((f) => ({ ...f, year: +e.target.value }))} />
             </div>
           </div>
           <button className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} onClick={generate} disabled={generating}>
-            {generating ? <><Spinner size={14} /> Gerando com IA...</> : 'Gerar Especificação'}
+            {generating ? <><Spinner size={14} /> Generating with AI...</> : 'Generate Specification'}
           </button>
         </>
       )}

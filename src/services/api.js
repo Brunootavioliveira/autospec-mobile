@@ -45,10 +45,10 @@ http.interceptors.response.use(
       const msg =
         error.response?.data?.message ||
         error.response?.data?.error ||
-        (status === 401 ? 'Email ou senha incorretos.' : null) ||
-        (status === 404 ? 'Usuário não encontrado.' : null) ||
+        (status === 401 ? 'Incorrect email or password.' : null) ||
+        (status === 404 ? 'User not found.' : null) ||
         error.message ||
-        `Erro ${status}`;
+        `Error ${status}`;
       return Promise.reject(new Error(msg));
     }
 
@@ -94,7 +94,7 @@ http.interceptors.response.use(
       error.response?.data?.message ||
       error.response?.data?.error ||
       error.message ||
-      `Erro ${status}`;
+      `Error ${status}`;
     return Promise.reject(new Error(msg));
   }
 );

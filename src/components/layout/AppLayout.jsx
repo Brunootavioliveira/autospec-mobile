@@ -7,7 +7,6 @@ import { MobileNav } from './MobileNav';
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Close sidebar on route change / resize
   useEffect(() => {
     const close = () => setSidebarOpen(false);
     window.addEventListener('resize', close);
@@ -16,7 +15,6 @@ export function AppLayout() {
 
   return (
     <div className="app">
-      {/* Overlay for mobile sidebar */}
       {sidebarOpen && (
         <div
           className="sidebar-overlay"

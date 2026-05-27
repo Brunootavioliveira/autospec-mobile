@@ -1,5 +1,5 @@
 export function RadarChart({ data }) {
-  const labels = ['Potência', 'Torque', 'Velocidade', 'Aceleração', 'Manuseio', 'Peso'];
+  const labels = ['Power', 'Torque', 'Top Speed', 'Acceleration', 'Handling', 'Weight'];  
   const size = 240;
   const cx = size / 2;
   const cy = size / 2;
