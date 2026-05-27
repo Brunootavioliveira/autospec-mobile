@@ -39,11 +39,11 @@ export function GaragePage() {
   });
 
   const removeVehicle = async (id) => {
-    if (!confirm('Remover este veículo da garage?')) return;
+    if (!confirm('Remove this vehicle from your garage?')) return;
     try {
       await garageService.remove(id);
       setVehicles((l) => l.filter((v) => v.id !== id));
-      toast('Veículo removido', 'info');
+      toast('Vehicle removed', 'info');
       garageService.insights().then(setInsights).catch(() => {});
     } catch (e) { toast(e.message, 'error'); }
   };
@@ -60,7 +60,7 @@ export function GaragePage() {
       const updated = await garageService.update(editTarget.id, editForm);
       setVehicles((l) => l.map((v) => v.id === updated.id ? updated : v));
       setShowEditModal(false);
-      toast('Veículo atualizado! ✓', 'success');
+      toast('Vehicle updated! ✓', 'success');
     } catch (e) { toast(e.message, 'error'); }
     finally { setEditLoading(false); }
   };
@@ -74,7 +74,7 @@ export function GaragePage() {
   };
 
   const addVehicle = async () => {
-    if (!addForm.vehicleSpecId) { toast('Selecione um veículo', 'error'); return; }
+    if (!addForm.vehicleSpecId) { toast('Please select a vehicle', 'error'); return; }
     setAddLoading(true);
     try {
       await garageService.add({ vehicleSpecId: +addForm.vehicleSpecId, fleetType: addForm.fleetType, nickname: addForm.nickname || null });
@@ -82,7 +82,7 @@ export function GaragePage() {
       setAddForm({ vehicleSpecId: '', fleetType: 'PERSONAL', nickname: '' });
       setSearchResults([]); setSearchQ('');
       await load();
-      toast('Veículo adicionado à garage! ✓', 'success');
+      toast('Vehicle added to garage! ✓', 'success');
     } catch (e) { toast(e.message, 'error'); }
     finally { setAddLoading(false); }
   };
@@ -92,9 +92,9 @@ export function GaragePage() {
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20, gap: 12, flexWrap: 'wrap' }}>
         <div>
           <div className="page-title">Garage</div>
-          <div className="page-sub">Gerencie seus veículos pessoais e de trabalho</div>
+          <div className="page-sub">Manage your personal and work vehicles</div>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>+ Adicionar Veículo</button>
+        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>+ Add Vehicle</button>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 12, marginBottom: 20 }}>
@@ -103,19 +103,19 @@ export function GaragePage() {
           <div className="stat-value">{insights?.totalVehicles ?? (loading ? '—' : vehicles.length)}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">Frota Ativa</div>
+          <div className="stat-label">Active Fleet</div>
           <div className="stat-value">{insights?.activeFleet ?? '—'}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">Mais Potente</div>
+          <div className="stat-label">Most Powerful</div>
           <div className="stat-value" style={{ fontSize: 15, marginTop: 4 }}>{insights?.mostPowerful || '—'}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">Pessoal</div>
+          <div className="stat-label">Personal</div>
           <div className="stat-value">{vehicles.filter((v) => v.fleetType === 'PERSONAL').length}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-label">Trabalho</div>
+          <div className="stat-label">Work</div>
           <div className="stat-value">{vehicles.filter((v) => v.fleetType === 'WORK').length}</div>
         </div>
       </div>
@@ -123,10 +123,10 @@ export function GaragePage() {
       <div className="pill-filters">
         {['ALL', 'PERSONAL', 'WORK'].map((f) => (
           <button key={f} className={`pill ${fleetFilter === f ? 'active' : ''}`} onClick={() => setFleetFilter(f)}>
-            {f === 'ALL' ? 'Todos' : f === 'PERSONAL' ? 'Pessoal' : 'Trabalho'}
+            {f === 'ALL' ? 'All' : f === 'PERSONAL' ? 'Personal' : 'Work'}
           </button>
         ))}
-        <span style={{ fontSize: 13, color: 'var(--text3)', marginLeft: 'auto' }}>{filtered.length} veículo{filtered.length !== 1 ? 's' : ''}</span>
+        <span style={{ fontSize: 13, color: 'var(--text3)', marginLeft: 'auto' }}>{filtered.length} vehicle{filtered.length !== 1 ? 's' : ''}</span>
       </div>
 
       {loading ? (
@@ -134,8 +134,8 @@ export function GaragePage() {
       ) : filtered.length === 0 ? (
         <div className="empty">
           <div className="empty-icon">🏎</div>
-          <div className="empty-title">Garage vazia</div>
-          <button className="btn btn-primary" style={{ marginTop: 20 }} onClick={() => setShowAddModal(true)}>+ Adicionar Veículo</button>
+          <div className="empty-title">Garage is empty</div>
+          <button className="btn btn-primary" style={{ marginTop: 20 }} onClick={() => setShowAddModal(true)}>+ Add Vehicle</button>
         </div>
       ) : (
         <div className="grid-3">
@@ -152,17 +152,17 @@ export function GaragePage() {
               </div>
               <div className="vehicle-card-body">
                 <div className="spec-grid" style={{ marginBottom: 12 }}>
-                  {[['Motor', v.vehicleSpec.engine], ['Potência', `${v.vehicleSpec.horsepower} HP`], ['Torque', `${v.vehicleSpec.torque} Nm`], ['Vel. Máx.', `${v.vehicleSpec.topSpeed} km/h`]].map(([k, val]) => (
+                  {[['Engine', v.vehicleSpec.engine], ['Power', `${v.vehicleSpec.horsepower} HP`], ['Torque', `${v.vehicleSpec.torque} Nm`], ['Top Speed', `${v.vehicleSpec.topSpeed} km/h`]].map(([k, val]) => (
                     <div key={k} className="spec-item"><div className="spec-key">{k}</div><div className="spec-val">{val}</div></div>
                   ))}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-                  <span className={`badge ${v.active ? 'badge-green' : 'badge-gray'}`} style={{ fontSize: 10 }}>{v.active ? 'Ativo' : 'Inativo'}</span>
-                  <span style={{ fontSize: 10, color: 'var(--text3)', marginLeft: 'auto' }}>+{new Date(v.addedAt).toLocaleDateString('pt-BR')}</span>
+                  <span className={`badge ${v.active ? 'badge-green' : 'badge-gray'}`} style={{ fontSize: 10 }}>{v.active ? 'Active' : 'Inactive'}</span>
+                  <span style={{ fontSize: 10, color: 'var(--text3)', marginLeft: 'auto' }}>+{new Date(v.addedAt).toLocaleDateString('en-US')}</span>
                 </div>
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <button className="btn btn-outline btn-sm" style={{ flex: 1, justifyContent: 'center' }} onClick={() => openEdit(v)}>✏ Editar</button>
-                  <button className="btn btn-danger btn-sm" style={{ flex: 1, justifyContent: 'center' }} onClick={() => removeVehicle(v.id)}>✕ Remover</button>
+                  <button className="btn btn-outline btn-sm" style={{ flex: 1, justifyContent: 'center' }} onClick={() => openEdit(v)}>✏ Edit</button>
+                  <button className="btn btn-danger btn-sm" style={{ flex: 1, justifyContent: 'center' }} onClick={() => removeVehicle(v.id)}>✕ Remove</button>
                 </div>
               </div>
             </div>
@@ -172,12 +172,12 @@ export function GaragePage() {
 
       {showAddModal && (
         <Modal onClose={() => setShowAddModal(false)} maxWidth={480}>
-          <div className="modal-title">+ Adicionar Veículo</div>
-          <div className="modal-sub">Busque um spec existente para adicionar à garage</div>
+          <div className="modal-title">+ Add Vehicle</div>
+          <div className="modal-sub">Search an existing specification to add to your garage</div>
           <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-            <input className="form-input" placeholder="Buscar por marca, modelo..." value={searchQ}
+            <input className="form-input" placeholder="Search by brand, model..." value={searchQ}
               onChange={(e) => setSearchQ(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && searchVehicles()} autoFocus />
-            <button className="btn btn-outline btn-sm" onClick={searchVehicles}>Buscar</button>
+            <button className="btn btn-outline btn-sm" onClick={searchVehicles}>Search</button>
           </div>
           {searchResults.length > 0 && (
             <div className="inline-results" style={{ marginBottom: 12 }}>
@@ -191,24 +191,24 @@ export function GaragePage() {
               ))}
             </div>
           )}
-          {addForm.vehicleSpecId && <div style={{ padding: '7px 12px', background: 'var(--orange-dim)', borderRadius: 'var(--radius)', fontSize: 12, color: 'var(--orange)', marginBottom: 12, border: '1px solid rgba(232,98,42,.2)' }}>✓ ID {addForm.vehicleSpecId} selecionado</div>}
+          {addForm.vehicleSpecId && <div style={{ padding: '7px 12px', background: 'var(--orange-dim)', borderRadius: 'var(--radius)', fontSize: 12, color: 'var(--orange)', marginBottom: 12, border: '1px solid rgba(232,98,42,.2)' }}>✓ ID {addForm.vehicleSpecId} selected</div>}
           <div className="grid-2" style={{ gap: 10, marginBottom: 4 }}>
             <div className="form-group" style={{ margin: 0 }}>
-              <label className="form-label">Tipo de Frota</label>
+              <label className="form-label">Fleet Type</label>
               <select className="form-select" value={addForm.fleetType} onChange={(e) => setAddForm((f) => ({ ...f, fleetType: e.target.value }))}>
-                <option value="PERSONAL">Pessoal</option>
-                <option value="WORK">Trabalho</option>
+                <option value="PERSONAL">Personal</option>
+                <option value="WORK">Work</option>
               </select>
             </div>
             <div className="form-group" style={{ margin: 0 }}>
-              <label className="form-label">Apelido (opcional)</label>
-              <input className="form-input" placeholder="Ex: Meu carro" value={addForm.nickname} onChange={(e) => setAddForm((f) => ({ ...f, nickname: e.target.value }))} />
+              <label className="form-label">Nickname (optional)</label>
+              <input className="form-input" placeholder="e.g. My Daily Car" value={addForm.nickname} onChange={(e) => setAddForm((f) => ({ ...f, nickname: e.target.value }))} />
             </div>
           </div>
           <div className="modal-actions">
-            <button className="btn btn-outline" onClick={() => setShowAddModal(false)}>Cancelar</button>
+            <button className="btn btn-outline" onClick={() => setShowAddModal(false)}>Cancel</button>
             <button className="btn btn-primary" onClick={addVehicle} disabled={addLoading || !addForm.vehicleSpecId}>
-              {addLoading ? <><Spinner size={14} /> Adicionando...</> : '+ Adicionar'}
+              {addLoading ? <><Spinner size={14} /> Adding...</> : '+ Add Vehicle'}
             </button>
           </div>
         </Modal>
@@ -216,29 +216,29 @@ export function GaragePage() {
 
       {showEditModal && editTarget && (
         <Modal onClose={() => setShowEditModal(false)} maxWidth={400}>
-          <div className="modal-title">✏ Editar Veículo</div>
+          <div className="modal-title">✏ Edit Vehicle</div>
           <div className="modal-sub">{editTarget.vehicleSpec.brand} {editTarget.vehicleSpec.model} {editTarget.vehicleSpec.year}</div>
           <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '12px 14px', marginBottom: 16, fontSize: 13, color: 'var(--text2)' }}>
             <div style={{ fontWeight: 600, marginBottom: 2 }}>{editTarget.vehicleSpec.engine}</div>
             <div style={{ color: 'var(--text3)' }}>{editTarget.vehicleSpec.horsepower}HP · {editTarget.vehicleSpec.torque}Nm · {editTarget.vehicleSpec.topSpeed}km/h</div>
           </div>
           <div className="form-group">
-            <label className="form-label">Tipo de Frota</label>
+            <label className="form-label">Fleet Type</label>
             <select className="form-select" value={editForm.fleetType} onChange={(e) => setEditForm((f) => ({ ...f, fleetType: e.target.value }))}>
-              <option value="PERSONAL">👤 Pessoal</option>
-              <option value="WORK">💼 Trabalho</option>
+              <option value="PERSONAL">Personal</option>
+              <option value="WORK">Work</option>
             </select>
           </div>
           <div className="form-group">
-            <label className="form-label">Apelido</label>
+            <label className="form-label">Nickname</label>
             <input className="form-input" placeholder={`${editTarget.vehicleSpec.brand} ${editTarget.vehicleSpec.model}`}
               value={editForm.nickname} onChange={(e) => setEditForm((f) => ({ ...f, nickname: e.target.value }))} autoFocus />
-            <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>Deixe em branco para usar o nome original</div>
+            <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>Leave blank to use the original model name</div>
           </div>
           <div className="modal-actions">
-            <button className="btn btn-outline" onClick={() => setShowEditModal(false)}>Cancelar</button>
+            <button className="btn btn-outline" onClick={() => setShowEditModal(false)}>Cancel</button>
             <button className="btn btn-primary" onClick={saveEdit} disabled={editLoading}>
-              {editLoading ? <><Spinner size={14} /> Salvando...</> : 'Salvar'}
+              {editLoading ? <><Spinner size={14} /> Saving...</> : 'Save'}
             </button>
           </div>
         </Modal>

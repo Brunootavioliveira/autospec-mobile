@@ -6,16 +6,16 @@ import { useToast } from '../context/ToastContext';
 import { vehicleService, comparisonService } from '../services';
 
 const ATTRS = [
-  { key: 'horsepower', label: 'Potência', unit: 'HP' },
+  { key: 'horsepower', label: 'Power', unit: 'HP' },
   { key: 'torque', label: 'Torque', unit: 'Nm' },
-  { key: 'topSpeed', label: 'Vel. Máxima', unit: 'km/h' },
+  { key: 'topSpeed', label: 'Top Speed', unit: 'km/h' },
   { key: 'acceleration', label: '0-100 km/h', unit: 's', lower: true },
-  { key: 'weight', label: 'Peso', unit: 'kg', lower: true },
-  { key: 'length', label: 'Comprimento', unit: 'm' },
-  { key: 'width', label: 'Largura', unit: 'm' },
-  { key: 'height', label: 'Altura', unit: 'm' },
-  { key: 'price', label: 'Preço', unit: 'BRL' },
-  { key: 'electricRange', label: 'Autonomia Elétrica', unit: 'km' },
+  { key: 'weight', label: 'Weight', unit: 'kg', lower: true },
+  { key: 'length', label: 'Length', unit: 'm' },
+  { key: 'width', label: 'Width', unit: 'm' },
+  { key: 'height', label: 'Height', unit: 'm' },
+  { key: 'price', label: 'Price', unit: 'USD' },
+  { key: 'electricRange', label: 'EV Range', unit: 'km' },
 ];
 
 export function ComparePage() {
@@ -35,7 +35,7 @@ export function ComparePage() {
   }, []);
 
   const compare = async () => {
-    if (!vehicleA || !vehicleB) { toast('Selecione os dois veículos', 'error'); return; }
+    if (!vehicleA || !vehicleB) { toast('Please select both vehicles', 'error'); return; }
     setComparing(true); setResult(null);
     try {
       const data = vehicleA.id && vehicleB.id
@@ -59,7 +59,7 @@ export function ComparePage() {
       });
       setSavedList((l) => [saved, ...l]);
       setShowSaveModal(false);
-      toast('Comparação salva! ✓', 'success');
+      toast('Comparison saved! ✓', 'success');
     } catch (e) { toast(e.message, 'error'); }
     finally { setSaving(false); }
   };
@@ -68,7 +68,7 @@ export function ComparePage() {
     try {
       await comparisonService.delete(id);
       setSavedList((l) => l.filter((x) => x.id !== id));
-      toast('Removido', 'info');
+      toast('Removed', 'info');
     } catch (e) { toast(e.message, 'error'); }
   };
 
@@ -77,34 +77,34 @@ export function ComparePage() {
     ? `${vehicleA?.brand} ${vehicleA?.model}`
     : winner === 'VEHICLE_B'
     ? `${vehicleB?.brand} ${vehicleB?.model}`
-    : 'Empate técnico';
+    : 'Technical tie';
   const winnerIcon = winner === 'DRAW' ? '🤝' : '🏆';
 
   return (
     <div className="fade-in">
-      <div className="page-title">Comparador de Veículos</div>
-      <div className="page-sub">Compare specs técnicas lado a lado com análise de IA</div>
+      <div className="page-title">Vehicle Comparator</div>
+      <div className="page-sub">Compare technical specs side by side with AI analysis</div>
 
       <div className="tabs" style={{ maxWidth: 380, marginBottom: 20 }}>
-        <button className={`tab ${activeTab === 'compare' ? 'active' : ''}`} onClick={() => setActiveTab('compare')}>Nova Comparação</button>
-        <button className={`tab ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>Salvas ({savedList.length})</button>
+        <button className={`tab ${activeTab === 'compare' ? 'active' : ''}`} onClick={() => setActiveTab('compare')}>New Comparison</button>
+        <button className={`tab ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>Saved ({savedList.length})</button>
       </div>
 
       {activeTab === 'saved' ? (
         <div>
           {savedList.length === 0 ? (
             <div className="empty">
-              <div className="empty-title">Nenhuma comparação salva</div>
-              <div className="empty-sub">Faça uma comparação e salve-a para acessar depois</div>
-              <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setActiveTab('compare')}>Fazer comparação</button>
+              <div className="empty-title">No saved comparisons</div>
+              <div className="empty-sub">Run a comparison and save it to access it later</div>
+              <button className="btn btn-primary" style={{ marginTop: 16 }} onClick={() => setActiveTab('compare')}>Compare Vehicles</button>
             </div>
           ) : savedList.map((s) => (
             <div key={s.id} className="saved-card" style={{ marginBottom: 10 }}>
               <div style={{ width: 44, height: 44, background: 'var(--orange-dim)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0, border: '1px solid rgba(232,98,42,.2)' }}>⚖</div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="saved-vs">COMPARAÇÃO SALVA</div>
+                <div className="saved-vs">SAVED COMPARISON</div>
                 <div className="saved-title">{s.title || `${s.vehicleA?.brand || ''} ${s.vehicleA?.model || ''} vs ${s.vehicleB?.brand || ''} ${s.vehicleB?.model || ''}`}</div>
-                <div className="saved-time">{new Date(s.savedAt || Date.now()).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+                <div className="saved-time">{new Date(s.savedAt || Date.now()).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
               </div>
               <button className="btn btn-danger btn-sm" onClick={() => deleteSaved(s.id)}>✕</button>
             </div>
@@ -113,17 +113,17 @@ export function ComparePage() {
       ) : (
         <>
           <div className="grid-2" style={{ marginBottom: 16 }}>
-            <VehicleSpecForm label="Veículo A" selected={vehicleA} onSelect={setVehicleA} onClear={() => { setVehicleA(null); setResult(null); }} />
-            <VehicleSpecForm label="Veículo B" selected={vehicleB} onSelect={setVehicleB} onClear={() => { setVehicleB(null); setResult(null); }} />
+            <VehicleSpecForm label="Vehicle A" selected={vehicleA} onSelect={setVehicleA} onClear={() => { setVehicleA(null); setResult(null); }} />
+            <VehicleSpecForm label="Vehicle B" selected={vehicleB} onSelect={setVehicleB} onClear={() => { setVehicleB(null); setResult(null); }} />
           </div>
 
           <div style={{ display: 'flex', gap: 10, marginBottom: 20, alignItems: 'center' }}>
             <button className="btn btn-primary btn-lg" onClick={compare} disabled={comparing || !vehicleA || !vehicleB}>
-              {comparing ? <><Spinner size={16} /> Comparando...</> : 'Comparar Veículos'}
+              {comparing ? <><Spinner size={16} /> Comparing...</> : 'Compare Vehicles'}
             </button>
-            {result && <button className="btn btn-outline" onClick={() => setShowSaveModal(true)}>Salvar resultado</button>}
+            {result && <button className="btn btn-outline" onClick={() => setShowSaveModal(true)}>Save Result</button>}
             {(vehicleA || vehicleB) && !comparing && (
-              <button className="btn btn-ghost btn-sm" onClick={() => { setVehicleA(null); setVehicleB(null); setResult(null); }}>↺ Reiniciar</button>
+              <button className="btn btn-ghost btn-sm" onClick={() => { setVehicleA(null); setVehicleB(null); setResult(null); }}>↺ Reset</button>
             )}
           </div>
 
@@ -138,7 +138,7 @@ export function ComparePage() {
                 <div style={{ fontSize: 32 }}>{winnerIcon}</div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 12, color: 'var(--text3)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 4 }}>
-                    {winner === 'DRAW' ? 'Resultado' : 'Vencedor geral'}
+                    {winner === 'DRAW' ? 'Outcome' : 'Overall Winner'}
                   </div>
                   <div style={{ fontSize: 20, fontWeight: 800, fontFamily: 'Barlow Condensed', letterSpacing: '-.3px' }}>{winnerLabel}</div>
                 </div>
@@ -166,7 +166,7 @@ export function ComparePage() {
               {result.summary && (
                 <div style={{ padding: '14px 18px', background: 'var(--bg2)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', marginBottom: 16, display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                   <div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 5 }}>Resumo da IA</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--orange)', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 5 }}>AI Summary</div>
                     <div style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.65 }}>{result.summary}</div>
                   </div>
                 </div>
@@ -174,7 +174,7 @@ export function ComparePage() {
 
               <div className="table-wrap">
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 160px 160px', borderBottom: '1px solid var(--border)', padding: '10px 16px', background: 'var(--bg3)' }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.5px', color: 'var(--text3)' }}>Atributo</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.5px', color: 'var(--text3)' }}>Attribute</div>
                   <div style={{ textAlign: 'center', fontWeight: 700, fontSize: 13, color: winner === 'VEHICLE_A' ? 'var(--green)' : 'var(--text)' }}>
                     {result.vehicleA?.brand} {result.vehicleA?.model}
                     {winner === 'VEHICLE_A' && <span style={{ marginLeft: 6, fontSize: 10, background: 'rgba(34,201,122,.15)', color: 'var(--green)', padding: '1px 6px', borderRadius: 99, border: '1px solid rgba(34,201,122,.2)' }}>WIN</span>}
@@ -213,17 +213,17 @@ export function ComparePage() {
 
       {showSaveModal && (
         <Modal onClose={() => setShowSaveModal(false)} maxWidth={420}>
-          <div className="modal-title">Salvar Comparação</div>
-          <div className="modal-sub">Dê um nome para esta comparação</div>
+          <div className="modal-title">Save Comparison</div>
+          <div className="modal-sub">Give a name to this comparison</div>
           <div className="form-group">
-            <label className="form-label">Título (opcional)</label>
+            <label className="form-label">Title (optional)</label>
             <input className="form-input" placeholder={`${vehicleA?.brand} ${vehicleA?.model} vs ${vehicleB?.brand} ${vehicleB?.model}`}
               value={saveTitle} onChange={(e) => setSaveTitle(e.target.value)} autoFocus />
           </div>
           <div className="modal-actions">
-            <button className="btn btn-outline" onClick={() => setShowSaveModal(false)}>Cancelar</button>
+            <button className="btn btn-outline" onClick={() => setShowSaveModal(false)}>Cancel</button>
             <button className="btn btn-primary" onClick={saveComparison} disabled={saving}>
-              {saving ? <><Spinner size={14} /> Salvando...</> : 'Salvar'}
+              {saving ? <><Spinner size={14} /> Saving...</> : 'Save'}
             </button>
           </div>
         </Modal>

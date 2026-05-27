@@ -6,18 +6,18 @@ import { Spinner, Sk } from '../components/ui/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
 const SPEC_ROWS = [
-  ['Motor',           (v) => v.engine],
-  ['Potência',        (v) => `${v.horsepower} HP`],
-  ['Torque',          (v) => `${v.torque} Nm`],
-  ['Tração',          (v) => v.drivetrain],
-  ['Vel. Máxima',     (v) => `${v.topSpeed} km/h`],
-  ['0–100 km/h',      (v) => `${v.acceleration} s`],
-  ['Comprimento',     (v) => `${v.length} m`],
-  ['Largura',         (v) => `${v.width} m`],
-  ['Altura',          (v) => `${v.height} m`],
-  ['Peso',            (v) => `${v.weight} kg`],
-  ['Autonomia Elét.', (v) => `${v.electricRange || 0} km`],
-  ['Preço',           (v) => `R$ ${Number(v.price || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`],
+  ['Engine',            (v) => v.engine],
+  ['Power',             (v) => `${v.horsepower} HP`],
+  ['Torque',            (v) => `${v.torque} Nm`],
+  ['Drivetrain',        (v) => v.drivetrain],
+  ['Top Speed',         (v) => `${v.topSpeed} km/h`],
+  ['0–100 km/h',        (v) => `${v.acceleration} s`],
+  ['Length',            (v) => `${v.length} m`],
+  ['Width',             (v) => `${v.width} m`],
+  ['Height',            (v) => `${v.height} m`],
+  ['Weight',            (v) => `${v.weight} kg`],
+  ['EV Range',          (v) => `${v.electricRange || 0} km`],
+  ['Price',             (v) => `$ ${Number(v.price || 0).toLocaleString('en-US', { minimumFractionDigits: 0 })}`],
 ];
 
 function SpecCard({ v }) {
@@ -49,20 +49,20 @@ function SpecCard({ v }) {
           </div>
           <div style={{ textAlign: 'right', flexShrink: 0 }}>
             <div style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 4 }}>
-              Preço estimado
+              Estimated Price
             </div>
             <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--orange)' }}>
-              R$ {Number(v.price || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
+              $ {Number(v.price || 0).toLocaleString('en-US', { minimumFractionDigits: 0 })}
             </div>
           </div>
         </div>
 
         <div className="grid-4" style={{ marginBottom: 24 }}>
           {[
-            { label: 'Potência',   value: v.horsepower, unit: 'HP',  color: 'var(--orange)' },
+            { label: 'Power',      value: v.horsepower, unit: 'HP',  color: 'var(--orange)' },
             { label: 'Torque',     value: v.torque,     unit: 'Nm',  color: 'var(--blue)'   },
             { label: '0–100 km/h', value: v.acceleration, unit: 's', color: 'var(--green)'  },
-            { label: 'Vel. Máx.', value: v.topSpeed,    unit: 'km/h', color: 'var(--text)'  },
+            { label: 'Top Speed',  value: v.topSpeed,    unit: 'km/h', color: 'var(--text)'  },
           ].map((s) => (
             <div key={s.label} className="stat-card card-sm">
               <div className="stat-label">{s.label}</div>
@@ -75,13 +75,13 @@ function SpecCard({ v }) {
         <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: 24, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '.4px' }}>
-              Radar de Performance
+              Performance Radar
             </div>
             <RadarChart data={v} />
           </div>
           <div>
             <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '.4px', marginBottom: 12 }}>
-              🔧 Especificações Completas
+              🔧 Full Specifications
             </div>
             <div className="grid-2">
               {SPEC_ROWS.map(([label, fn]) => (
@@ -133,13 +133,13 @@ export function GeneratePage() {
 
   const generate = async () => {
     if (!form.brand || !form.model || !form.version || !form.year) {
-      toast('Preencha todos os campos', 'error'); return;
+      toast('Please fill in all fields', 'error'); return;
     }
     setGenerating(true); setResult(null);
     try {
       const data = await vehicleService.generate(form);
       setResult(data);
-      toast('Especificação gerada! ✓', 'success');
+      toast('Specification generated! ✓', 'success');
     } catch (e) {
       toast(e.message, 'error');
     } finally {
@@ -164,16 +164,16 @@ export function GeneratePage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">Gerar Especificação</div>
-      <div className="page-sub">Informe um veículo e a IA retorna as especificações técnicas completas</div>
+      <div className="page-title">Generate Specification</div>
+      <div className="page-sub">Enter vehicle details and AI will return the full technical specifications</div>
 
       <div className="card" style={{ marginBottom: 20 }}>
         <div className="tabs" style={{ marginBottom: 18 }}>
           <button className={`tab ${tab === 'generate' ? 'active' : ''}`} onClick={() => { setTab('generate'); setResult(null); }}>
-            Gerar com IA
+            Generate with AI
           </button>
           <button className={`tab ${tab === 'search' ? 'active' : ''}`} onClick={() => { setTab('search'); setResult(null); }}>
-            Buscar existente
+            Search Existing
           </button>
         </div>
 
@@ -185,24 +185,24 @@ export function GeneratePage() {
                 background: 'rgba(229,72,72,.08)', border: '1px solid rgba(229,72,72,.2)',
                 color: '#e54848', fontSize: 13, marginBottom: 16,
               }}>
-                ⚠ Apenas usuários com role <strong>ANALYST</strong> ou <strong>ADMIN</strong> podem gerar specs. Solicite ao administrador.
+                ⚠ Only users with the <strong>ANALYST</strong> or <strong>ADMIN</strong> role can generate specifications. Please contact your administrator.
               </div>
             )}
             <div className="grid-2" style={{ gap: 12, marginBottom: 12 }}>
               <div>
-                <label className="form-label">Marca</label>
-                <input className="form-input" placeholder="Ex: Toyota" value={form.brand} onChange={field('brand')} />
+                <label className="form-label">Brand</label>
+                <input className="form-input" placeholder="e.g. Toyota" value={form.brand} onChange={field('brand')} />
               </div>
               <div>
-                <label className="form-label">Modelo</label>
-                <input className="form-input" placeholder="Ex: Corolla" value={form.model} onChange={field('model')} />
+                <label className="form-label">Model</label>
+                <input className="form-input" placeholder="e.g. Corolla" value={form.model} onChange={field('model')} />
               </div>
               <div>
-                <label className="form-label">Versão</label>
-                <input className="form-input" placeholder="Ex: XEi 2.0" value={form.version} onChange={field('version')} />
+                <label className="form-label">Version</label>
+                <input className="form-input" placeholder="e.g. XEi 2.0" value={form.version} onChange={field('version')} />
               </div>
               <div>
-                <label className="form-label">Ano</label>
+                <label className="form-label">Year</label>
                 <input className="form-input" type="number" min="1950" max="2030" value={form.year} onChange={field('year')} />
               </div>
             </div>
@@ -215,7 +215,7 @@ export function GeneratePage() {
               onClick={generate}
               disabled={generating || !canGenerate}
             >
-              {generating ? <><Spinner size={15} /> Gerando com IA...</> : 'Gerar Especificação'}
+              {generating ? <><Spinner size={15} /> Generating with AI...</> : 'Generate Specification'}
             </button>
           </>
         )}
@@ -225,14 +225,14 @@ export function GeneratePage() {
             <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
               <input
                 className="form-input"
-                placeholder="Buscar por marca, modelo, versão..."
+                placeholder="Search by brand, model, version..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && search()}
                 style={{ flex: 1 }}
               />
               <button className="btn btn-outline" onClick={search} disabled={searching}>
-                {searching ? <Spinner size={14} /> : 'Buscar'}
+                {searching ? <Spinner size={14} /> : 'Search'}
               </button>
             </div>
             {searchResults.length > 0 && (
@@ -257,7 +257,7 @@ export function GeneratePage() {
             )}
             {searchResults.length === 0 && searchQuery && !searching && (
               <div style={{ fontSize: 13, color: 'var(--text3)', textAlign: 'center', padding: '16px 0' }}>
-                Nenhum resultado. Tente gerar com IA.
+                No results found. Try generating with AI.
               </div>
             )}
           </>

@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { userService } from '../services';
 import { useToast } from '../context/ToastContext';
 import { Spinner } from '../components/ui/Skeleton';
+import { Search } from 'lucide-react';
 
-import { Search} from 'lucide-react';
 const ROLES = ['VIEWER', 'ANALYST', 'ADMIN'];
 
 const ROLE_BADGE = {
@@ -46,7 +46,7 @@ export function AdminPage() {
       setUsers((prev) =>
         prev.map((u) => u.id === userId ? { ...u, role: newRole } : u)
       );
-      toast('Role atualizada com sucesso', 'success');
+      toast('Role updated successfully', 'success');
     } catch (err) {
       toast(err.message, 'error');
     } finally {
@@ -64,8 +64,8 @@ export function AdminPage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">Gerenciamento de Usuários</div>
-      <div className="page-sub">Atribua permissões aos usuários cadastrados</div>
+      <div className="page-title">User Management</div>
+      <div className="page-sub">Assign roles and permissions to registered users</div>
 
       <div className="grid-3" style={{ marginBottom: 24 }}>
         {Object.entries(ROLE_BADGE).map(([role, s]) => {
@@ -96,7 +96,7 @@ export function AdminPage() {
 
           <input
             className="form-input"
-            placeholder="Buscar por nome ou email..."
+            placeholder="Search by name or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{ 
@@ -108,10 +108,10 @@ export function AdminPage() {
 
         {loading ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text3)', padding: 24 }}>
-            <Spinner size={18} /> Carregando usuários...
+            <Spinner size={18} /> Loading users...
           </div>
         ) : filtered.length === 0 ? (
-          <div style={{ color: 'var(--text3)', padding: 24 }}>Nenhum usuário encontrado.</div>
+          <div style={{ color: 'var(--text3)', padding: 24 }}>No users found.</div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {filtered.map((u) => (

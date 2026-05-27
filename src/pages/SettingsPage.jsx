@@ -26,19 +26,19 @@ export function SettingsPage() {
     try {
       await userService.update({ name: profile.name });
       await refreshProfile();
-      toast('Perfil atualizado!', 'success');
+      toast('Profile updated!', 'success');
     } catch (err) { toast(err.message, 'error'); }
     finally { setSaving(false); }
   };
 
   const changePwd = async (e) => {
     e.preventDefault();
-    if (pwd.newPassword !== pwd.confirmNewPassword) { toast('As senhas não coincidem', 'error'); return; }
-    if (pwd.newPassword.length < 8) { toast('Senha mínima: 8 caracteres', 'error'); return; }
+    if (pwd.newPassword !== pwd.confirmNewPassword) { toast('Passwords do not match', 'error'); return; }
+    if (pwd.newPassword.length < 8) { toast('Minimum password length: 8 characters', 'error'); return; }
     setSaving(true);
     try {
       await userService.changePassword(pwd);
-      toast('Senha alterada! ✓', 'success');
+      toast('Password changed! ✓', 'success');
       setPwd({ currentPassword: '', newPassword: '', confirmNewPassword: '' });
     } catch (err) { toast(err.message, 'error'); }
     finally { setSaving(false); }
@@ -48,7 +48,7 @@ export function SettingsPage() {
     try {
       await userService.revokeSession(id);
       setSessions((s) => s.filter((x) => x.id !== id));
-      toast('Sessão encerrada', 'info');
+      toast('Session terminated', 'info');
     } catch (err) { toast(err.message, 'error'); }
   };
 
@@ -56,7 +56,7 @@ export function SettingsPage() {
     try {
       await userService.revokeAllSessions();
       setSessions((s) => s.filter((x) => x.currentSession));
-      toast('Outras sessões encerradas', 'info');
+      toast('Other sessions terminated', 'info');
     } catch (err) { toast(err.message, 'error'); }
   };
 
@@ -64,12 +64,12 @@ export function SettingsPage() {
 
   return (
     <div className="fade-in">
-      <div className="page-title">Configurações</div>
-      <div className="page-sub">Gerencie seu perfil, segurança e sessões</div>
+      <div className="page-title">Settings</div>
+      <div className="page-sub">Manage your profile, security, and active sessions</div>
 
       <div className="tabs" style={{ maxWidth: 500 }}>
-        <button className={`tab ${tab === 'profile' ? 'active' : ''}`} onClick={() => setTab('profile')}>Perfil</button>
-        <button className={`tab ${tab === 'security' ? 'active' : ''}`} onClick={() => setTab('security')}>Senha & Sessões</button>
+        <button className={`tab ${tab === 'profile' ? 'active' : ''}`} onClick={() => setTab('profile')}>Profile</button>
+        <button className={`tab ${tab === 'security' ? 'active' : ''}`} onClick={() => setTab('security')}>Password & Sessions</button>
       </div>
 
       {tab === 'profile' && (
@@ -87,15 +87,15 @@ export function SettingsPage() {
             </div>
             <form onSubmit={saveProfile}>
               <div className="form-group">
-                <label className="form-label">Nome</label>
+                <label className="form-label">Name</label>
                 <input className="form-input" value={profile.name}
                   onChange={(e) => setProfile((p) => ({ ...p, name: e.target.value }))}
                   minLength={2} maxLength={100} required />
               </div>
               <div className="form-group">
-                <label className="form-label">Email</label>
+                <label className="form-label">Email Address</label>
                 <input className="form-input" value={user?.email || ''} disabled style={{ opacity: .5, cursor: 'not-allowed' }} />
-                <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>Email não pode ser alterado</div>
+                <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>Email cannot be changed</div>
               </div>
               <div className="form-group">
                 <label className="form-label">Role</label>
@@ -103,21 +103,21 @@ export function SettingsPage() {
               </div>
               <div style={{ display: 'flex', gap: 10 }}>
                 <button type="submit" className="btn btn-primary" disabled={saving}> 
-                  {saving ? <><Spinner size={14} /> Salvando...</> : 'Salvar alterações'}
+                  {saving ? <><Spinner size={14} /> Saving...</> : 'Save changes'}
                 </button>
-                <button type="button" className="btn btn-danger btn-sm" onClick={logout}>Sair da conta</button>
+                <button type="button" className="btn btn-danger btn-sm" onClick={logout}>Log out</button>
               </div>
             </form>
           </div>
 
           <div className="card">
-            <div className="section-title" style={{ marginBottom: 16 }}>Informações da Conta</div>
+            <div className="section-title" style={{ marginBottom: 16 }}>Account Details</div>
             {[
-              ['ID do usuário', '•••• (protegido)'],
-              ['Email', user?.email],
+              ['User ID', '•••• (protected)'],
+              ['Email Address', user?.email],
               ['Role', user?.role],
-              ['Plataforma', 'AutoSpec AI v1.0'],
-              ['Backend', 'Spring Boot 3 + JWT'],
+              ['Platform', 'AutoSpec AI v1.0'],
+              ['Backend Stack', 'Spring Boot 3 + JWT'],
             ].map(([k, v]) => (
               <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid var(--border)', fontSize: 14 }}>
                 <span style={{ color: 'var(--text3)' }}>{k}</span>
@@ -131,63 +131,63 @@ export function SettingsPage() {
       {tab === 'security' && (
         <div className="grid-2">
           <div className="card">
-            <div className="section-title" style={{ marginBottom: 16 }}>Alterar Senha</div>
+            <div className="section-title" style={{ marginBottom: 16 }}>Change Password</div>
             <form onSubmit={changePwd}>
               <div className="form-group">
-                <label className="form-label">Senha Atual</label>
+                <label className="form-label">Current Password</label>
                 <input className="form-input" type="password" placeholder="••••••••"
                   value={pwd.currentPassword} onChange={(e) => setPwd((p) => ({ ...p, currentPassword: e.target.value }))} required />
               </div>
               <div className="form-group">
-                <label className="form-label">Nova Senha</label>
-                <input className="form-input" type="password" placeholder="Mín. 8 caracteres"
+                <label className="form-label">New Password</label>
+                <input className="form-input" type="password" placeholder="Min. 8 characters"
                   value={pwd.newPassword} onChange={(e) => setPwd((p) => ({ ...p, newPassword: e.target.value }))} required minLength={6} />
-                <div className={`pwd-req ${pwd.newPassword.length >= 6 ? 'ok' : ''}`}>
-                  {pwd.newPassword.length >= 8 ? '✓' : '○'} Mínimo 8 caracteres
+                <div className={`pwd-req ${pwd.newPassword.length >= 8 ? 'ok' : ''}`}>
+                  {pwd.newPassword.length >= 8 ? '✓' : '○'} Minimum 8 characters
                 </div>
               </div>
               <div className="form-group">
-                <label className="form-label">Confirmar Nova Senha</label>
-                <input className="form-input" type="password" placeholder="Repita a nova senha"
+                <label className="form-label">Confirm New Password</label>
+                <input className="form-input" type="password" placeholder="Repeat new password"
                   value={pwd.confirmNewPassword} onChange={(e) => setPwd((p) => ({ ...p, confirmNewPassword: e.target.value }))} required />
                 {pwd.confirmNewPassword && (
                   <div className={`pwd-req ${pwd.newPassword === pwd.confirmNewPassword ? 'ok' : ''}`}>
-                    {pwd.newPassword === pwd.confirmNewPassword ? '✓ Senhas coincidem' : '✕ Senhas não coincidem'}
+                    {pwd.newPassword === pwd.confirmNewPassword ? '✓ Passwords match' : '✕ Passwords do not match'}
                   </div>
                 )}
               </div>
               <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={saving}>
-                {saving ? <><Spinner size={14} /> Salvando...</> : 'Salvar nova senha'}
+                {saving ? <><Spinner size={14} /> Saving...</> : 'Update password'}
               </button>
             </form>
           </div>
 
           <div className="card">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-              <div className="section-title">Sessões Ativas</div>
+              <div className="section-title">Active Sessions</div>
               {sessions.length > 1 && (
-                <button className="btn btn-danger btn-sm" onClick={revokeAll}>Revogar outras</button>
+                <button className="btn btn-danger btn-sm" onClick={revokeAll}>Revoke others</button>
               )}
             </div>
             {loadingSessions ? (
               <><Sk h={60} mb={8} /><Sk h={60} /></>
             ) : sessions.length === 0 ? (
-              <div style={{ color: 'var(--text3)', fontSize: 14 }}>Nenhuma sessão encontrada</div>
+              <div style={{ color: 'var(--text3)', fontSize: 14 }}>No active sessions found</div>
             ) : sessions.map((s) => (
               <div key={s.id} className="session-row">
                 <div className="session-icon">{s.currentSession ? '💻' : '📱'}</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {s.deviceInfo || 'Dispositivo desconhecido'}
+                    {s.deviceInfo || 'Unknown device'}
                   </div>
                   <div style={{ fontSize: 12, color: 'var(--text3)' }}>
-                    {s.ipAddress} · {s.browserApp} · {new Date(s.lastActive).toLocaleDateString('pt-BR')}
+                    {s.ipAddress} · {s.browserApp} · {new Date(s.lastActive).toLocaleDateString('en-US')}
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                   {s.currentSession
-                    ? <span className="badge badge-green">Atual</span>
-                    : <button className="btn btn-danger btn-sm" onClick={() => revokeSession(s.id)}>Revogar</button>}
+                    ? <span className="badge badge-green">Current</span>
+                    : <button className="btn btn-danger btn-sm" onClick={() => revokeSession(s.id)}>Revoke</button>}
                 </div>
               </div>
             ))}

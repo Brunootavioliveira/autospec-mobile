@@ -15,7 +15,7 @@ export function LoginPage({ onSwitch }) {
     try {
       await login(form.email, form.password);
     } catch (err) {
-      setError(err.message || 'Credenciais inválidas');
+      setError(err.message || 'Invalid credentials');
     } finally {
       setLoading(false);
     }
@@ -35,17 +35,17 @@ export function LoginPage({ onSwitch }) {
         </div>
 
         <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>Bem-vindo de volta</div>
-          <div style={{ fontSize: 14, color: 'var(--text3)' }}>Acesse sua conta para continuar</div>
+          <div style={{ fontSize: 22, fontWeight: 700, marginBottom: 4 }}>Welcome back</div>
+          <div style={{ fontSize: 14, color: 'var(--text3)' }}>Log in to your account to continue</div>
         </div>
 
         <form onSubmit={submit}>
           <div className="form-group">
-            <label className="form-label">Email</label>
+            <label className="form-label">Email Address</label>
             <input
               className="form-input"
               type="email"
-              placeholder="seu@email.com"
+              placeholder="your@email.com"
               value={form.email}
               onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
               required
@@ -53,7 +53,7 @@ export function LoginPage({ onSwitch }) {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">Senha</label>
+            <label className="form-label">Password</label>
             <input
               className="form-input"
               type="password"
@@ -74,17 +74,17 @@ export function LoginPage({ onSwitch }) {
             style={{ width: '100%', justifyContent: 'center' }}
             disabled={loading}
           >
-            {loading ? <><Spinner size={16} /> Entrando...</> : 'Entrar'}
+            {loading ? <><Spinner size={16} /> Logging in...</> : 'Log In'}
           </button>
         </form>
 
         <div style={{ textAlign: 'center', marginTop: 20, fontSize: 14, color: 'var(--text3)' }}>
-          Não tem conta?{' '}
+          Don't have an account?{' '}
           <span
             style={{ color: 'var(--orange)', cursor: 'pointer', fontWeight: 600 }}
             onClick={onSwitch}
           >
-            Criar conta
+            Sign up
           </span>
         </div>
       </div>

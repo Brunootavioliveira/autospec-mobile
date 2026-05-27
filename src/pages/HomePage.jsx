@@ -31,10 +31,10 @@ export function HomePage() {
   const recentHistory = history?.content || [];
 
   const stats = [
-    { label: 'Garage', value: garage.length, sub: 'Veículos cadastrados', path: '/garage' },
-    { label: 'Frota Ativa', value: activeVehicles.length, sub: insights?.mostPowerful ? `+ Potente: ${insights.mostPowerful}` : 'Veículos ativos', path: '/garage' },
-    { label: 'Histórico', value: history?.totalElements || 0, sub: 'Ações registradas', path: '/history' },
-    { label: 'Acesso', value: user?.role || '—', sub: user?.email, path: '/settings', isText: true },
+    { label: 'Garage', value: garage.length, sub: 'Registered vehicles', path: '/garage' },
+    { label: 'Active Fleet', value: activeVehicles.length, sub: insights?.mostPowerful ? `Most Powerful: ${insights.mostPowerful}` : 'Active vehicles', path: '/garage' },
+    { label: 'History', value: history?.totalElements || 0, sub: 'Logged actions', path: '/history' },
+    { label: 'Access', value: user?.role || '—', sub: user?.email, path: '/settings', isText: true },
   ];
 
   return (
@@ -69,16 +69,16 @@ export function HomePage() {
       <div className="grid-2">
         <div className="card">
           <div className="section-header">
-            <div className="section-title">Veículos Ativos ({activeVehicles.length})</div>
-            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/garage')}>Ver garage →</button>
+            <div className="section-title">Active Vehicles ({activeVehicles.length})</div>
+            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/garage')}>View garage →</button>
           </div>
           {loading ? (
             <><Sk h={52} mb={8} /><Sk h={52} mb={8} /><Sk h={52} /></>
           ) : activeVehicles.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '28px 0' }}>
               <div style={{ fontSize: 36, opacity: .2, marginBottom: 10 }}>🏎</div>
-              <div style={{ color: 'var(--text3)', fontSize: 14, marginBottom: 14 }}>Garage vazia — adicione veículos</div>
-              <button className="btn btn-primary btn-sm" onClick={() => navigate('/garage')}>+ Adicionar</button>
+              <div style={{ color: 'var(--text3)', fontSize: 14, marginBottom: 14 }}>Empty garage — add some vehicles</div>
+              <button className="btn btn-primary btn-sm" onClick={() => navigate('/garage')}>+ Add Vehicle</button>
             </div>
           ) : activeVehicles.slice(0, 5).map((v) => (
             <div key={v.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
@@ -98,23 +98,23 @@ export function HomePage() {
           ))}
           {activeVehicles.length > 5 && (
             <div style={{ fontSize: 12, color: 'var(--text3)', textAlign: 'center', paddingTop: 10 }}>
-              +{activeVehicles.length - 5} mais
+              +{activeVehicles.length - 5} more
             </div>
           )}
         </div>
 
         <div className="card">
           <div className="section-header">
-            <div className="section-title">Ações Recentes</div>
-            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/history')}>Ver histórico →</button>
+            <div className="section-title">Recent Activity</div>
+            <button className="btn btn-ghost btn-sm" onClick={() => navigate('/history')}>View history →</button>
           </div>
           {loading ? (
             <><Sk h={52} mb={8} /><Sk h={52} mb={8} /><Sk h={52} /></>
           ) : recentHistory.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '28px 0' }}>
               <div style={{ fontSize: 36, opacity: .2, marginBottom: 10 }}><ClipboardList size={42} /></div>
-              <div style={{ color: 'var(--text3)', fontSize: 14, marginBottom: 14 }}>Nenhuma ação registrada</div>
-              <button className="btn btn-outline btn-sm" onClick={() => navigate('/analyze')}>Iniciar análise</button>
+              <div style={{ color: 'var(--text3)', fontSize: 14, marginBottom: 14 }}>No recorded activity</div>
+              <button className="btn btn-outline btn-sm" onClick={() => navigate('/analyze')}>Start analysis</button>
             </div>
           ) : recentHistory.map((h) => (
             <div key={h.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
@@ -129,7 +129,7 @@ export function HomePage() {
                 <div style={{ fontSize: 11, color: 'var(--text3)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{h.description}</div>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontSize: 11, color: 'var(--text3)' }}>{new Date(h.createdAt).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}</div>
+                <div style={{ fontSize: 11, color: 'var(--text3)' }}>{new Date(h.createdAt).toLocaleDateString('en-US', { day: '2-digit', month: 'short' })}</div>
                 <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.4px', marginTop: 2, color: h.actionType === 'ANALYSIS' ? 'var(--blue)' : h.actionType === 'COMPARISON' ? 'var(--orange)' : 'var(--green)' }}>
                   {h.actionType}
                 </div>
@@ -138,13 +138,13 @@ export function HomePage() {
           ))}
 
           <div style={{ marginTop: 14, background: 'var(--bg3)', borderRadius: 'var(--radius)', padding: 14, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 14 }}>
-            <img src={iconeCarro} alt="Comparativo" style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
+            <img src={iconeCarro} alt="Comparison" style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Comparação rápida</div>
-              <div style={{ fontSize: 12, color: 'var(--text3)' }}>Compare dois veículos com análise de IA</div>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Quick Comparison</div>
+              <div style={{ fontSize: 12, color: 'var(--text3)' }}>Compare two vehicles using AI insights</div>
             </div>
             <button className="btn btn-outline btn-sm" onClick={() => navigate('/compare')} style={{ flexShrink: 0 }}>
-              Comparar
+              Compare
             </button>
           </div>
         </div>
